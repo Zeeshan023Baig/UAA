@@ -1,16 +1,52 @@
-# React + Vite
+# United Associates Agencies
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A premium e-commerce platform for high-end optical frames and lenses, featuring a cinematic, classy design with seamless user experience.
 
-Currently, two official plugins are available:
+## 🌟 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🎥 Immersive Home Experience
+- **Camouflaged Background Video**: A subtle, high-quality video background with custom grayscale and contrast effects that blends perfectly with the dark theme.
+- **Dynamic Content**: "Trending Now" section that automatically fetches and displays the latest products.
+- **Narrative Section**: "Our Philosophy" block building the brand story.
 
-## React Compiler
+### 🛍️ Shopping Experience
+- **Full Catalogue**: Browse products with categories (In-house, International, Indian).
+- **Smart Cart**: 
+  - Real-time total calculation.
+  - **Customer Details Form**: Captures Name, Email, and Phone before checkout.
+  - Interactive Order Confirmation receipt.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### ⚙️ Admin Dashboard
+- **Inventory Management**: Add new products with image URLs or uploads, update stock levels.
+- **Order History**: View all customer orders with detailed breakdowns (Customer info, Items, Total).
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend**: React (Vite)
+- **Styling**: Tailwind CSS (Custom "Neon Blue" `#38bdf8` theme)
+- **Icons**: Lucide React
+- **Backend/Database**: Firebase Firestore (Transaction-safe ordering)
+
+## 🚀 Getting Started
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/Zeeshan023Baig/UAA.git
+    ```
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
+3.  **Run Locally**
+    ```bash
+    npm run dev
+    ```
+
+## 🎨 Theme
+
+- **Primary Background**: `#0f172a` (Dark Slate)
+- **Accent Color**: `#38bdf8` (Neon Blue)
+- **Text**: White / Slate-50
+
+---
+*Curating the finest optical experiences with precision, elegance, and clarity.*
