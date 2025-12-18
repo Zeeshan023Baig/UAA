@@ -1,0 +1,160 @@
+import { useState, useEffect } from 'react';
+import { ShoppingBag, Info, Loader } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+
+const ProductCard = ({ product }) => {
+    const { addToCart, cartItems, updateQuantity, removeFromCart } = useCart();
+    const cartItem = cartItems.find(item => item.id === product.id);
+    const quantityInCart = cartItem?.quantity || 0;
+
+    // Local input state
+    const [inputValue, setInputValue] = useState(1);
+
+    const isOutOfStock = product.stock <= 0;
+
+    // Sync input with cart quantity when it changes
+    useEffect(() => {
+        if (quantityInCart > 0) {
+            setInputValue(quantityInCart);
+        } else if (quantityInCart === 0 && inputValue === 0) {
+            // If removed from cart, reset to 1
+            setInputValue(1);
+        }
+        // Ideally we don't reset to 1 if user is typing a new number for a non-cart item
+        // But if quantityInCart > 0, we should reflect it.
+    }, [quantityInCart]);
+
+    const handleInputChange = (e) => {
+        const val = e.target.value;
+        if (val === '') {
+            setInputValue('');
+            return;
+        }
+
+        const num = parseInt(val);
+        if (!isNaN(num)) {
+            setInputValue(num); // Allow typing any number, we validate on submit/blur
+        }
+    };
+
+    const handleInputBlur = () => {
+        if (inputValue === '' || inputValue < 1) {
+            setInputValue(quantityInCart > 0 ? quantityInCart : 1);
+        } else if (inputValue > product.stock) {
+            setInputValue(product.stock);
+        }
+    };
+
+    const handleAction = () => {
+        const qty = parseInt(inputValue);
+        if (!qty || qty < 1) return;
+
+        // Cap at stock
+        const finalQty = Math.min(qty, product.stock);
+        if (finalQty !== qty) {
+            setInputValue(finalQty);
+        }
+
+        if (quantityInCart > 0) {
+            // Update mode: set to exact value
+            const delta = finalQty - quantityInCart;
+            if (delta !== 0) {
+                updateQuantity(product.id, delta);
+            }
+        } else {
+            // Add mode
+            addToCart(product, finalQty);
+        }
+    };
+
+    return (
+        <div className="group flex flex-col space-y-4">
+            <div className="relative aspect-[4/3] overflow-hidden bg-white/5 rounded-sm">
+                <img
+                    src={product.image}
+                    alt={product.name}
+                    className={`object-cover w-full h-full transform transition-transform duration-700 ${isOutOfStock ? 'grayscale opacity-50' : 'group-hover:scale-105'}`}
+                />
+                {!isOutOfStock && (
+                    <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                        <p className="text-xs text-white/80 flex items-center gap-2">
+                            <Info className="w-3 h-3 text-[#38bdf8]" /> {product.specs}
+                        </p>
+                    </div>
+                )}
+                {isOutOfStock && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                        <span className="px-4 py-2 bg-red-900/80 text-white text-xs font-bold uppercase tracking-widest border border-red-500/50">Sold Out</span>
+                    </div>
+                )}
+                {quantityInCart > 0 && (
+                    <div className="absolute top-2 right-2 bg-[#38bdf8] text-primary font-bold w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
+                        {quantityInCart}
+                    </div>
+                )}
+            </div>
+
+            <div className="flex justify-between items-start">
+                <div>
+                    <h3 className="text-xl font-serif text-white group-hover:text-[#38bdf8] transition-colors">{product.name}</h3>
+                    <p className="text-sm text-white/40">{product.category}</p>
+                </div>
+                <div className="text-right">
+                    <span className="block text-lg font-medium text-[#38bdf8]">₹{product.price}</span>
+                    <span className={`text-xs ${product.stock < 10 ? 'text-orange-400' : 'text-green-400'}`}>
+                        {product.stock} left in stock
+                    </span>
+                </div>
+            </div>
+
+            {/* Quantity Input Area */}
+            {!isOutOfStock && (
+                <div className="flex gap-2">
+                    <input
+                        type="number"
+                        min="1"
+                        max={product.stock}
+                        value={inputValue}
+                        onChange={handleInputChange}
+                        onBlur={handleInputBlur}
+                        className="w-20 bg-white/5 border border-white/10 text-center text-white p-3 rounded-sm focus:border-[#38bdf8] focus:outline-none"
+                    />
+                    <button
+                        onClick={handleAction}
+                        className={`flex-1 py-3 border flex items-center justify-center gap-2 uppercase text-xs tracking-widest font-bold transition-colors duration-300
+                        ${quantityInCart > 0
+                                ? 'bg-[#38bdf8] border-[#38bdf8] text-primary hover:bg-white hover:border-white'
+                                : 'bg-white/5 border-white/10 text-white/80 hover:bg-[#38bdf8] hover:text-primary hover:border-[#38bdf8]'
+                            }`}
+                    >
+                        {quantityInCart > 0 ? 'Update Qty' : (
+                            <>
+                                <ShoppingBag className="w-4 h-4" /> Add to Cart
+                            </>
+                        )}
+                    </button>
+                    {quantityInCart > 0 && (
+                        <button
+                            onClick={() => removeFromCart(product.id)}
+                            className="px-4 border border-red-500/50 text-red-400 hover:bg-red-500 hover:text-white transition-colors rounded-sm"
+                            title="Remove from cart"
+                        >
+                            <span className="sr-only">Remove</span>
+                            x
+                        </button>
+                    )}
+                </div>
+            )}
+            {isOutOfStock && (
+                <button
+                    disabled
+                    className="w-full py-3 border border-white/5 bg-transparent text-white/20 cursor-not-allowed uppercase text-xs tracking-widest font-bold flex items-center justify-center gap-2"
+                >
+                    <ShoppingBag className="w-4 h-4" /> Out of Stock
+                </button>
+            )}
+        </div>
+    );
+};
+
+export default ProductCard;

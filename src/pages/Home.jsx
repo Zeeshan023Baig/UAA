@@ -121,7 +121,7 @@ const Home = () => {
 
             {/* Features Overview */}
             <section className="grid grid-cols-1 md:grid-cols-2 gap-8 container mx-auto px-6">
-                <div className="p-8 border border-white/10 bg-[#1e293b] hover:border-[#38bdf8]/50 transition-colors duration-500 group rounded-xl">
+                <Link to="/catalogue" className="block p-8 border border-white/10 bg-[#1e293b] hover:border-[#38bdf8]/50 transition-colors duration-500 group rounded-xl">
                     <div className="overflow-hidden rounded-lg mb-6 h-48">
                         <img
                             src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=800&q=80"
@@ -129,16 +129,16 @@ const Home = () => {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                     </div>
-                    <h3 className="text-2xl font-serif mb-4">Premium Eyewear</h3>
+                    <h3 className="text-2xl font-serif mb-4 text-white">Premium Eyewear</h3>
                     <p className="text-white/60 mb-6 leading-relaxed">
                         Discover our curated collection of luxury frames and lenses, designed for those who appreciate distinction.
                     </p>
-                    <Link to="/catalogue" className="text-[#38bdf8] text-sm tracking-widest uppercase hover:text-white transition-colors flex items-center gap-2">
+                    <span className="text-[#38bdf8] text-sm tracking-widest uppercase group-hover:text-white transition-colors flex items-center gap-2">
                         View Collection <ArrowRight className="w-4 h-4" />
-                    </Link>
-                </div>
+                    </span>
+                </Link>
 
-                <div className="p-8 border border-white/10 bg-[#1e293b] hover:border-[#38bdf8]/50 transition-colors duration-500 group rounded-xl">
+                <Link to="/catalogue" className="block p-8 border border-white/10 bg-[#1e293b] hover:border-[#38bdf8]/50 transition-colors duration-500 group rounded-xl">
                     <div className="overflow-hidden rounded-lg mb-6 h-48">
                         <img
                             src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80"
@@ -146,14 +146,14 @@ const Home = () => {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                     </div>
-                    <h3 className="text-2xl font-serif mb-4">Instant Orders</h3>
+                    <h3 className="text-2xl font-serif mb-4 text-white">Instant Orders</h3>
                     <p className="text-white/60 mb-6 leading-relaxed">
                         Seamlessly browse our live inventory and place bulk orders instantly.
                     </p>
-                    <Link to="/catalogue" className="text-[#38bdf8] text-sm tracking-widest uppercase hover:text-white transition-colors flex items-center gap-2">
+                    <span className="text-[#38bdf8] text-sm tracking-widest uppercase group-hover:text-white transition-colors flex items-center gap-2">
                         Start Order <ArrowRight className="w-4 h-4" />
-                    </Link>
-                </div>
+                    </span>
+                </Link>
             </section>
         </div >
     );
