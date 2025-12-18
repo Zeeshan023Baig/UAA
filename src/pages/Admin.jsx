@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useProducts } from '../context/ProductContext';
 import { db } from '../lib/firebase';
-import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
-import { Package, ShoppingBag, Plus, Save, Loader } from 'lucide-react';
+import { collection, query, orderBy, onSnapshot, updateDoc, doc } from 'firebase/firestore';
+import { Package, ShoppingBag, Plus, Save, Loader, CheckCircle, XCircle } from 'lucide-react';
 
 const Admin = () => {
     const { products, addProduct, restockProduct } = useProducts();
@@ -146,6 +146,16 @@ const Admin = () => {
             alert('Failed to update stock');
         }
     };
+    const handleToggleStatus = async (id, currentStatus) => {
+        const newStatus = currentStatus === 'fulfilled' ? 'pending' : 'fulfilled';
+        try {
+            await updateDoc(doc(db, "orders", id), {
+                status: newStatus
+            });
+        } catch (error) {
+            alert('Error updating order status: ' + error.message);
+        }
+    };
 
     return (
         <div className="space-y-8">
@@ -271,6 +281,7 @@ const Admin = () => {
                                         <th className="pb-4">Date</th>
                                         <th className="pb-4">Customer</th>
                                         <th className="pb-4">Items</th>
+                                        <th className="pb-4">Status</th>
                                         <th className="pb-4 text-right">Total</th>
                                     </tr>
                                 </thead>
@@ -288,12 +299,24 @@ const Admin = () => {
                                             </td>
                                             <td className="py-4">
                                                 {order.items.map(item => (
-                                                    <div key={item.id} className="text-white/80">
+                                                    <div key={item.id} className={`text-white/80 ${order.status === 'fulfilled' ? 'line-through opacity-50' : ''}`}>
                                                         {item.quantity}x {item.name}
                                                     </div>
                                                 ))}
                                             </td>
-                                            <td className="py-4 text-right text-[#38bdf8] font-bold">
+                                            <td className="py-4">
+                                                <button
+                                                    onClick={() => handleToggleStatus(order.id, order.status)}
+                                                    className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border transition-colors ${order.status === 'fulfilled'
+                                                            ? 'bg-green-500/10 border-green-500/50 text-green-400 hover:bg-green-500/20'
+                                                            : 'bg-yellow-500/10 border-yellow-500/50 text-yellow-400 hover:bg-yellow-500/20'
+                                                        }`}
+                                                >
+                                                    {order.status === 'fulfilled' ? <CheckCircle className="w-3 h-3" /> : <Package className="w-3 h-3" />}
+                                                    {order.status === 'fulfilled' ? 'Fulfilled' : 'Pending'}
+                                                </button>
+                                            </td>
+                                            <td className={`py-4 text-right font-bold ${order.status === 'fulfilled' ? 'text-white/40 line-through decoration-white/40' : 'text-[#38bdf8]'}`}>
                                                 ₹{order.total}
                                             </td>
                                         </tr>
