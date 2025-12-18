@@ -51,7 +51,9 @@ const Login = ({ onLogin }) => {
                     </div>
 
                     {error && (
-                        <p className="text-red-400 text-xs text-center">{error}</p>
+                        <div className="bg-red-500/10 border border-red-500/20 p-3 rounded-sm">
+                            <p className="text-red-500 text-xs font-bold text-center uppercase tracking-widest">{error}</p>
+                        </div>
                     )}
 
                     <button
