@@ -24,10 +24,11 @@ const Layout = () => {
                     <div className="hidden md:flex items-center space-x-8">
                         <Link to="/" className="hover:text-[#38bdf8] transition-colors duration-300 text-sm uppercase tracking-widest">Home</Link>
                         <Link to="/catalogue" className="hover:text-[#38bdf8] transition-colors duration-300 text-sm uppercase tracking-widest">Catalogue</Link>
-                        <Link to="/cart" className="relative group p-2">
+                        <Link to="/cart" className="relative group p-2 flex items-center gap-2">
                             <ShoppingCart className="w-5 h-5 group-hover:text-[#38bdf8] transition-colors" />
+                            <span className="text-sm uppercase tracking-widest hover:text-[#38bdf8] transition-colors duration-300">Cart</span>
                             {cartItemCount > 0 && (
-                                <span className="absolute -top-1 -right-1 bg-[#38bdf8] text-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                <span className="absolute -top-1 right-8 bg-[#38bdf8] text-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                                     {cartItemCount}
                                 </span>
                             )}
