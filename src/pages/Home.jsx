@@ -141,17 +141,17 @@ const Home = () => {
                 <Link to="/catalogue" className="block p-8 border border-white/10 bg-[#1e293b] hover:border-[#38bdf8]/50 transition-colors duration-500 group rounded-xl">
                     <div className="overflow-hidden rounded-lg mb-6 h-48">
                         <img
-                            src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80"
-                            alt="Instant Orders"
+                            src="https://images.unsplash.com/photo-1504194569429-ca0152bc2a3f?auto=format&fit=crop&w=800&q=80"
+                            alt="Precision Lenses"
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                     </div>
-                    <h3 className="text-2xl font-serif mb-4 text-white">Instant Orders</h3>
+                    <h3 className="text-2xl font-serif mb-4 text-white">Precision Lenses</h3>
                     <p className="text-white/60 mb-6 leading-relaxed">
-                        Seamlessly browse our live inventory and place bulk orders instantly.
+                        Advanced digital surfacing and protective coatings for crystal clear vision in every environment.
                     </p>
                     <span className="text-[#38bdf8] text-sm tracking-widest uppercase group-hover:text-white transition-colors flex items-center gap-2">
-                        Start Order <ArrowRight className="w-4 h-4" />
+                        View Lens Options <ArrowRight className="w-4 h-4" />
                     </span>
                 </Link>
             </section>
