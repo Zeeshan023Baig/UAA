@@ -67,6 +67,26 @@ const ProductCard = ({ product }) => {
         }
     };
 
+    // Debounced update for existing cart items
+    useEffect(() => {
+        if (quantityInCart > 0) {
+            // Only debounce if value is different from current cart quantity
+            // and is a valid number
+            const val = parseInt(inputValue);
+            if (!isNaN(val) && val > 0 && val !== quantityInCart) {
+                const timeoutId = setTimeout(() => {
+                    // Update: calculate delta
+                    const finalQty = Math.min(val, product.stock);
+                    const delta = finalQty - quantityInCart;
+                    if (delta !== 0) {
+                        updateQuantity(product.id, delta);
+                    }
+                }, 600);
+                return () => clearTimeout(timeoutId);
+            }
+        }
+    }, [inputValue, quantityInCart, product.stock, updateQuantity, product.id]);
+
     return (
         <div className="group flex flex-col space-y-4">
             <div className="relative aspect-[4/3] overflow-hidden bg-white/5 rounded-sm">
@@ -119,20 +139,20 @@ const ProductCard = ({ product }) => {
                         onBlur={handleInputBlur}
                         className="w-20 bg-white/5 border border-white/10 text-center text-white p-3 rounded-sm focus:border-[#38bdf8] focus:outline-none"
                     />
-                    <button
-                        onClick={handleAction}
-                        className={`flex-1 py-3 border flex items-center justify-center gap-2 uppercase text-xs tracking-widest font-bold transition-colors duration-300
-                        ${quantityInCart > 0
-                                ? 'bg-[#38bdf8] border-[#38bdf8] text-primary hover:bg-white hover:border-white'
-                                : 'bg-white/5 border-white/10 text-white/80 hover:bg-[#38bdf8] hover:text-primary hover:border-[#38bdf8]'
-                            }`}
-                    >
-                        {quantityInCart > 0 ? 'Update Qty' : (
-                            <>
-                                <ShoppingBag className="w-4 h-4" /> Add to Cart
-                            </>
-                        )}
-                    </button>
+
+                    {quantityInCart === 0 ? (
+                        <button
+                            onClick={handleAction}
+                            className="flex-1 py-3 border border-white/10 bg-white/5 text-white/80 hover:bg-[#38bdf8] hover:text-primary hover:border-[#38bdf8] flex items-center justify-center gap-2 uppercase text-xs tracking-widest font-bold transition-colors duration-300"
+                        >
+                            <ShoppingBag className="w-4 h-4" /> Add to Cart
+                        </button>
+                    ) : (
+                        <div className="flex-1 flex items-center justify-center gap-2 text-green-400 text-xs font-bold uppercase tracking-widest border border-white/10 bg-white/5 rounded-sm">
+                            <span className="animate-pulse">In Cart</span>
+                        </div>
+                    )}
+
                     {quantityInCart > 0 && (
                         <button
                             onClick={() => removeFromCart(product.id)}
