@@ -8,6 +8,7 @@ const Cart = () => {
     const { cartItems, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
     const { purchaseItems } = useProducts();
     const [customer, setCustomer] = useState({ name: '', email: '', phone: '' });
+    const [phoneError, setPhoneError] = useState('');
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [lastOrder, setLastOrder] = useState(null);
 
@@ -16,6 +17,10 @@ const Cart = () => {
         if (cartItems.length === 0) return;
         if (!customer.name || !customer.email || !customer.phone) {
             alert("Please fill in all your details to proceed.");
+            return;
+        }
+        if (customer.phone.length !== 10) {
+            alert("Please enter a valid 10-digit phone number.");
             return;
         }
 
@@ -151,14 +156,41 @@ const Cart = () => {
                                 value={customer.email}
                                 onChange={e => setCustomer({ ...customer, email: e.target.value })}
                             />
-                            <input
-                                type="tel"
-                                placeholder="Phone Number"
-                                required
-                                className="w-full bg-black/20 border border-white/10 p-3 text-sm text-white rounded-sm focus:border-[#38bdf8] outline-none transition-colors"
-                                value={customer.phone}
-                                onChange={e => setCustomer({ ...customer, phone: e.target.value })}
-                            />
+                            <div className="relative">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-sm select-none border-r border-white/10 pr-2">
+                                    +91
+                                </span>
+                                <input
+                                    type="tel"
+                                    placeholder="Phone Number (10 digits)"
+                                    required
+                                    maxLength="10"
+                                    pattern="[0-9]{10}"
+                                    title="Please enter a valid 10-digit phone number"
+                                    className={`w-full bg-black/20 border p-3 pl-16 text-sm text-white rounded-sm outline-none transition-colors ${phoneError ? 'border-red-500 mb-0' : 'border-white/10 focus:border-[#38bdf8]'}`}
+                                    value={customer.phone}
+                                    onChange={e => {
+                                        const raw = e.target.value;
+                                        if (/\D/.test(raw)) {
+                                            setPhoneError("Only numbers allowed");
+                                            setTimeout(() => setPhoneError(''), 3000);
+                                            return;
+                                        }
+                                        if (raw.length > 10) {
+                                            setPhoneError("Maximum 10 digits allowed");
+                                            setTimeout(() => setPhoneError(''), 3000);
+                                            return;
+                                        }
+                                        setPhoneError('');
+                                        setCustomer({ ...customer, phone: raw });
+                                    }}
+                                />
+                            </div>
+                            {phoneError && (
+                                <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1 animate-in slide-in-from-top-1">
+                                    {phoneError}
+                                </p>
+                            )}
                         </div>
 
                         <div className="space-y-2 text-sm text-white/60 pt-4 border-t border-white/10">
