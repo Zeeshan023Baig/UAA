@@ -15,7 +15,7 @@ const Home = () => {
                 {/* Video Background Layer - z-0 */}
                 <div className="absolute inset-0 z-0">
                     <iframe
-                        className="absolute top-1/2 left-1/2 w-[400%] h-[400%] -translate-x-1/2 -translate-y-1/2 object-cover opacity-25 pointer-events-none saturate-0 contrast-125"
+                        className="absolute top-1/2 left-1/2 w-[400%] h-[400%] -translate-x-1/2 -translate-y-1/2 object-cover opacity-40 pointer-events-none saturate-0 contrast-125"
                         src="https://www.youtube.com/embed/nrOX6ackB14?autoplay=1&mute=1&controls=0&loop=1&playlist=nrOX6ackB14&showinfo=0&rel=0&iv_load_policy=3&disablekb=1"
                         title="Background Video"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
