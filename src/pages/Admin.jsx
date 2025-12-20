@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useProducts } from '../context/ProductContext';
 import { db } from '../lib/firebase';
 import { collection, query, orderBy, onSnapshot, updateDoc, doc } from 'firebase/firestore';
-import { Package, ShoppingBag, Plus, Save, Loader, CheckCircle, XCircle, RefreshCw } from 'lucide-react';
+import { Package, Plus, Loader, CheckCircle } from 'lucide-react';
 
 const StockInput = ({ initialStock, onUpdate }) => {
     const [value, setValue] = useState(initialStock);
