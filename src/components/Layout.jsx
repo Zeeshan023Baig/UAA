@@ -64,9 +64,9 @@ const Layout = () => {
 
             {/* Footer */}
             <footer className="border-t border-white/10 bg-black/20 mt-auto">
-                <div className="container mx-auto px-6 py-8 text-center text-white/40 text-sm">
-                    <p>&copy; {new Date().getFullYear()} United Associates Agencies. All rights reserved.</p>
-                    <p className="mt-2 text-xs">Excellence in Optics</p>
+                <div className="container mx-auto px-6 py-8 text-center text-sm">
+                    <p className="text-[#38bdf8]">&copy; {new Date().getFullYear()} United Associates Agencies. All rights reserved.</p>
+                    <p className="mt-2 text-xs text-orange-400">Excellence in Optics</p>
                 </div>
             </footer>
         </div>
