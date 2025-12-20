@@ -2,7 +2,60 @@ import { useState, useEffect } from 'react';
 import { useProducts } from '../context/ProductContext';
 import { db } from '../lib/firebase';
 import { collection, query, orderBy, onSnapshot, updateDoc, doc } from 'firebase/firestore';
-import { Package, ShoppingBag, Plus, Save, Loader, CheckCircle, XCircle } from 'lucide-react';
+import { Package, ShoppingBag, Plus, Save, Loader, CheckCircle, XCircle, RefreshCw } from 'lucide-react';
+
+const StockInput = ({ initialStock, onUpdate }) => {
+    const [value, setValue] = useState(initialStock);
+    const [status, setStatus] = useState('idle'); // idle, saving, saved, error
+
+    useEffect(() => {
+        setValue(initialStock);
+    }, [initialStock]);
+
+    useEffect(() => {
+        if (parseInt(value) === parseInt(initialStock)) {
+            setStatus('idle');
+            return;
+        }
+
+        if (value === '' || isNaN(parseInt(value))) {
+            return; // Don't auto-save invalid/empty input
+        }
+
+        setStatus('saving');
+        const timeoutId = setTimeout(async () => {
+            try {
+                const stockVal = parseInt(value);
+                if (isNaN(stockVal)) return;
+
+                const result = await onUpdate(stockVal);
+                if (result.success) {
+                    setStatus('saved');
+                    setTimeout(() => setStatus('idle'), 2000);
+                } else {
+                    setStatus('error');
+                }
+            } catch (error) {
+                setStatus('error');
+            }
+        }, 800);
+
+        return () => clearTimeout(timeoutId);
+    }, [value, initialStock, onUpdate]);
+
+    return (
+        <div className="flex items-center gap-2 relative">
+            <input
+                type="number"
+                className={`w-20 bg-black/20 border p-1 text-center text-white rounded-sm transition-colors ${status === 'error' ? 'border-red-500' : 'border-white/10'}`}
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+            />
+            {status === 'saving' && <Loader className="w-3 h-3 text-[#38bdf8] animate-spin absolute -right-6" />}
+            {status === 'saved' && <CheckCircle className="w-3 h-3 text-green-400 absolute -right-6 animate-in fade-in" />}
+        </div>
+    );
+};
 
 const Admin = () => {
     const { products, addProduct, restockProduct } = useProducts();
@@ -23,8 +76,6 @@ const Admin = () => {
     const [isAdding, setIsAdding] = useState(false);
 
     // Stock Edit State
-    const [editingStock, setEditingStock] = useState({});
-
     // Fetch Orders
     useEffect(() => {
         const q = query(collection(db, "orders"), orderBy("date", "desc"));
@@ -131,21 +182,6 @@ const Admin = () => {
         }
     };
 
-    const handleStockUpdate = async (id) => {
-        const newStock = editingStock[id];
-        if (newStock === undefined) return;
-        const result = await restockProduct(id, newStock);
-        if (result.success) {
-            alert('Stock updated');
-            setEditingStock(prev => {
-                const newState = { ...prev };
-                delete newState[id];
-                return newState;
-            });
-        } else {
-            alert('Failed to update stock');
-        }
-    };
     const handleToggleStatus = async (id, currentStatus) => {
         const newStatus = currentStatus === 'fulfilled' ? 'pending' : 'fulfilled';
         try {
@@ -251,17 +287,10 @@ const Admin = () => {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <span className="text-xs text-white/40 uppercase">Stock:</span>
-                                    <input
-                                        type="number"
-                                        className="w-20 bg-black/20 border border-white/10 p-1 text-center text-white rounded-sm"
-                                        value={editingStock[product.id] !== undefined ? editingStock[product.id] : product.stock}
-                                        onChange={(e) => setEditingStock({ ...editingStock, [product.id]: e.target.value })}
+                                    <StockInput
+                                        initialStock={product.stock}
+                                        onUpdate={(newStock) => restockProduct(product.id, newStock)}
                                     />
-                                    {editingStock[product.id] !== undefined && (
-                                        <button onClick={() => handleStockUpdate(product.id)} className="p-2 text-[#38bdf8] hover:bg-white/10 rounded-sm">
-                                            <Save className="w-4 h-4" />
-                                        </button>
-                                    )}
                                 </div>
                             </div>
                         ))}
@@ -308,8 +337,8 @@ const Admin = () => {
                                                 <button
                                                     onClick={() => handleToggleStatus(order.id, order.status)}
                                                     className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border transition-colors ${order.status === 'fulfilled'
-                                                            ? 'bg-green-500/10 border-green-500/50 text-green-400 hover:bg-green-500/20'
-                                                            : 'bg-yellow-500/10 border-yellow-500/50 text-yellow-400 hover:bg-yellow-500/20'
+                                                        ? 'bg-green-500/10 border-green-500/50 text-green-400 hover:bg-green-500/20'
+                                                        : 'bg-yellow-500/10 border-yellow-500/50 text-yellow-400 hover:bg-yellow-500/20'
                                                         }`}
                                                 >
                                                     {order.status === 'fulfilled' ? <CheckCircle className="w-3 h-3" /> : <Package className="w-3 h-3" />}

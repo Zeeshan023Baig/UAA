@@ -17,7 +17,7 @@ const Layout = () => {
                         <Link to="/" className="block w-16 md:w-24">
                             <img src="/logo.png" alt="UAA Logo" className="w-full h-auto object-contain bg-white p-1 rounded-sm" />
                         </Link>
-                        <span className="text-xs font-serif text-[#38bdf8] tracking-wider mt-1 text-center">Your Vision, Elevated.</span>
+                        <span className="text-xs font-serif text-white/70 tracking-wider mt-1 text-center">Your Vision, Elevated.</span>
                     </div>
 
                     {/* Desktop Menu */}
