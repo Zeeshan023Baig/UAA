@@ -162,7 +162,7 @@ const Cart = () => {
                                 </span>
                                 <input
                                     type="tel"
-                                    placeholder="Phone Number (10 digits)"
+                                    placeholder="Phone Number"
                                     required
                                     maxLength="10"
                                     pattern="[0-9]{10}"
