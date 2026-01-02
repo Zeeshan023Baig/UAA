@@ -18,9 +18,9 @@ const Layout = () => {
                     <div className="flex flex-col items-center">
                         <Link to="/" className="block w-16 md:w-24">
                             <img
-                                src="/logo.png"
+                                src={theme === 'dark' ? "/logo.png" : "/logo_light.jpg"}
                                 alt="UAA Logo"
-                                className={`w-full h-auto object-contain p-1 rounded-sm ${theme === 'dark' ? 'bg-white' : 'bg-primary'}`}
+                                className={`w-full h-auto object-contain p-1 rounded-sm ${theme === 'dark' ? 'bg-white' : 'transparent'}`}
                             />
                         </Link>
                         <span className="text-xs font-serif text-white/70 tracking-wider mt-1 text-center">Your Vision, Elevated.</span>
