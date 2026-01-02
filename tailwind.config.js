@@ -7,11 +7,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#0f172a', // Dark Slate Blue (Background)
-        secondary: '#f8fafc', // Light Text
-        // Accent removed to resolve caching conflict
-        muted: '#94a3b8', // Slate Gray (Secondary Text)
-        surface: '#1e293b', // Darker Slate (Card Background)
+        primary: 'var(--bg-primary)',
+        secondary: 'var(--text-primary)',
+        muted: 'var(--text-secondary)',
+        surface: 'var(--bg-secondary)',
+        accent: 'var(--accent-color)',
+        border: 'var(--border-color)',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],

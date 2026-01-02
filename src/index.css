@@ -4,11 +4,23 @@
 
 @layer base {
   :root {
+    /* Default (Dark Mode) - Matching current site */
     --bg-primary: #0f172a;
     --bg-secondary: #1e293b;
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --accent-color: #38bdf8;
+    --border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Light Mode Overrides */
+  .light {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --accent-color: #0ea5e9;
+    --border-color: rgba(15, 23, 42, 0.1);
   }
 
   body {

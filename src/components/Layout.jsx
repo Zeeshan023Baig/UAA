@@ -1,21 +1,27 @@
 import { Link, Outlet } from 'react-router-dom';
-import { ShoppingCart, Menu, X } from 'lucide-react';
+import { ShoppingCart, Menu, X, Sun, Moon } from 'lucide-react';
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Layout = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { cartCount: cartItemCount } = useCart();
+    const { theme, toggleTheme } = useTheme();
 
     return (
-        <div className="min-h-screen flex flex-col bg-primary text-secondary font-sans selection:bg-[#38bdf8] selection:text-primary">
+        <div className="min-h-screen flex flex-col bg-primary text-secondary font-sans selection:bg-[#38bdf8] selection:text-primary transition-colors duration-300">
             <div id="page-top" className="absolute top-0 w-full h-0" />
             {/* Navbar */}
-            <nav className="sticky top-0 z-50 bg-primary/95 backdrop-blur-sm border-b border-white/10">
+            <nav className="sticky top-0 z-50 bg-primary/95 backdrop-blur-sm border-b border-white/10 transition-colors duration-300">
                 <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                     <div className="flex flex-col items-center">
                         <Link to="/" className="block w-16 md:w-24">
-                            <img src="/logo.png" alt="UAA Logo" className="w-full h-auto object-contain bg-white p-1 rounded-sm" />
+                            <img
+                                src="/logo.png"
+                                alt="UAA Logo"
+                                className={`w-full h-auto object-contain p-1 rounded-sm ${theme === 'dark' ? 'bg-white' : 'bg-primary'}`}
+                            />
                         </Link>
                         <span className="text-xs font-serif text-white/70 tracking-wider mt-1 text-center">Your Vision, Elevated.</span>
                     </div>
@@ -33,15 +39,32 @@ const Layout = () => {
                                 </span>
                             )}
                         </Link>
+
+                        {/* Theme Toggle */}
+                        <button
+                            onClick={toggleTheme}
+                            className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                        >
+                            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                        </button>
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <button
-                        className="md:hidden text-secondary hover:text-[#38bdf8]"
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    >
-                        {isMenuOpen ? <X /> : <Menu />}
-                    </button>
+                    <div className="md:hidden flex items-center gap-4">
+                        <button
+                            onClick={toggleTheme}
+                            className="p-2 rounded-full hover:bg-white/10 transition-colors"
+                        >
+                            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                        </button>
+                        <button
+                            className="text-secondary hover:text-[#38bdf8]"
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        >
+                            {isMenuOpen ? <X /> : <Menu />}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Mobile Menu */}

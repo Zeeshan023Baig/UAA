@@ -1,5 +1,61 @@
 export const initialProducts = [
+    // Lenses
+    {
+        name: "UA Standard Digital",
+        price: 999,
+        image: "https://united-associatesagencies.vercel.app/logo_light_new.jpg",
+        specs: "Face: oval",
+        stock: 100,
+        category: "Lenses",
+        brand: "UA OPTICS"
+    },
+    {
+        name: "Varilux Comfort Max",
+        price: 12000,
+        image: "https://united-associatesagencies.vercel.app/logo_light_new.jpg",
+        specs: "Face: oval",
+        stock: 100,
+        category: "Lenses",
+        brand: "ESSILOR"
+    },
+    {
+        name: "Zeiss DriveSafe",
+        price: 8000,
+        image: "https://images.unsplash.com/photo-1618331835717-801e976710b2?auto=format&fit=crop&q=80&w=800",
+        specs: "Face: oval",
+        stock: 100,
+        category: "Lenses",
+        brand: "ZEISS"
+    },
+    {
+        name: "Prime HD Clear",
+        price: 1500,
+        image: "https://united-associatesagencies.vercel.app/logo_light_new.jpg",
+        specs: "Face: oval",
+        stock: 100,
+        category: "Lenses",
+        brand: "PRIME LENS"
+    },
+
     // International Brands
+    {
+        name: "fff",
+        price: 333,
+        image: "https://united-associatesagencies.vercel.app/logo_light_new.jpg",
+        specs: "Face: oval",
+        stock: 100,
+        category: "International",
+        brand: "Unknown"
+    },
+    {
+        name: "demo",
+        price: 79000,
+        image: "https://united-associatesagencies.vercel.app/logo_light_new.jpg",
+        specs: "Face: oval",
+        stock: 100,
+        category: "International",
+        brand: "Unknown"
+    },
     {
         name: "Burberry BE4291",
         price: 19500,
@@ -21,7 +77,7 @@ export const initialProducts = [
     {
         name: "Burberry Pilot Frame",
         price: 22000,
-        image: "https://united-associatesagencies.vercel.app/logo_light_new.jpg", // Placeholder for base64
+        image: "https://united-associatesagencies.vercel.app/logo_light_new.jpg",
         specs: "Face: heart",
         stock: 100,
         category: "International",
@@ -381,44 +437,5 @@ export const initialProducts = [
         stock: 100,
         category: "Indian",
         brand: "TITAN EYE+"
-    },
-
-    // Lenses (Mapping to In-House/International/Indian for consistency or keeping as is)
-    // For now, I'll use "Lenses" as the category and we can update Admin to show it.
-    {
-        name: "UA Standard Digital",
-        price: 999,
-        image: "https://united-associatesagencies.vercel.app/logo_light_new.jpg",
-        specs: "Face: oval",
-        stock: 100,
-        category: "Lenses",
-        brand: "UA OPTICS"
-    },
-    {
-        name: "Varilux Comfort Max",
-        price: 12000,
-        image: "https://united-associatesagencies.vercel.app/logo_light_new.jpg",
-        specs: "Face: oval",
-        stock: 100,
-        category: "Lenses",
-        brand: "ESSILOR"
-    },
-    {
-        name: "Zeiss DriveSafe",
-        price: 8000,
-        image: "https://images.unsplash.com/photo-1618331835717-801e976710b2?auto=format&fit=crop&q=80&w=800",
-        specs: "Face: oval",
-        stock: 100,
-        category: "Lenses",
-        brand: "ZEISS"
-    },
-    {
-        name: "Prime HD Clear",
-        price: 1500,
-        image: "https://united-associatesagencies.vercel.app/logo_light_new.jpg",
-        specs: "Face: oval",
-        stock: 100,
-        category: "Lenses",
-        brand: "PRIME LENS"
     }
 ];

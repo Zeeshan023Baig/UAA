@@ -237,7 +237,17 @@ const Admin = () => {
                                 </h2>
                                 <button
                                     type="button"
-                                    onClick={handleImportCatalog}
+                                    onClick={async () => {
+                                        if (window.confirm('This will import default products. Continue?')) {
+                                            try {
+                                                await importCatalog();
+                                                alert('Catalog imported successfully!');
+                                            } catch (error) {
+                                                console.error("Import failed:", error);
+                                                alert('Import failed. Check console for details.');
+                                            }
+                                        }
+                                    }}
                                     className="text-[10px] uppercase tracking-wider text-[#38bdf8]/60 hover:text-[#38bdf8] border border-dashed border-[#38bdf8]/30 px-2 py-1 rounded-sm hover:bg-[#38bdf8]/5 transition-colors"
                                     title="Import default products"
                                 >
