@@ -23,18 +23,18 @@ const Layout = () => {
                                 className={`w-full h-auto object-contain p-1 rounded-sm ${theme === 'dark' ? 'bg-white' : 'transparent'}`}
                             />
                         </Link>
-                        <span className="text-xs font-serif text-white/70 tracking-wider mt-1 text-center">Your Vision, Elevated.</span>
+                        <span className="text-xs font-serif text-muted tracking-wider mt-1 text-center">Your Vision, Elevated.</span>
                     </div>
 
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center space-x-8">
-                        <Link to="/" className="hover:text-[#38bdf8] transition-colors duration-300 text-sm uppercase tracking-widest">Home</Link>
-                        <Link to="/catalogue" className="hover:text-[#38bdf8] transition-colors duration-300 text-sm uppercase tracking-widest">Catalogue</Link>
+                        <Link to="/" className="hover:text-accent transition-colors duration-300 text-sm uppercase tracking-widest">Home</Link>
+                        <Link to="/catalogue" className="hover:text-accent transition-colors duration-300 text-sm uppercase tracking-widest">Catalogue</Link>
                         <Link to="/cart" className="relative group p-2 flex items-center gap-2">
-                            <ShoppingCart className="w-5 h-5 group-hover:text-[#38bdf8] transition-colors" />
-                            <span className="text-sm uppercase tracking-widest hover:text-[#38bdf8] transition-colors duration-300">Cart</span>
+                            <ShoppingCart className="w-5 h-5 group-hover:text-accent transition-colors" />
+                            <span className="text-sm uppercase tracking-widest hover:text-accent transition-colors duration-300">Cart</span>
                             {cartItemCount > 0 && (
-                                <span className="absolute -top-1 right-8 bg-[#38bdf8] text-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                <span className="absolute -top-1 right-8 bg-accent text-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                                     {cartItemCount}
                                 </span>
                             )}
@@ -59,7 +59,7 @@ const Layout = () => {
                             {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                         </button>
                         <button
-                            className="text-secondary hover:text-[#38bdf8]"
+                            className="text-secondary hover:text-accent"
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                         >
                             {isMenuOpen ? <X /> : <Menu />}
@@ -69,11 +69,11 @@ const Layout = () => {
 
                 {/* Mobile Menu */}
                 {isMenuOpen && (
-                    <div className="md:hidden absolute w-full bg-primary border-b border-white/10 animate-in slide-in-from-top-5">
+                    <div className="md:hidden absolute w-full bg-primary border-b border-border animate-in slide-in-from-top-5">
                         <div className="flex flex-col p-6 space-y-4">
-                            <Link to="/" onClick={() => setIsMenuOpen(false)} className="hover:text-[#38bdf8] text-lg">Home</Link>
-                            <Link to="/catalogue" onClick={() => setIsMenuOpen(false)} className="hover:text-[#38bdf8] text-lg">Catalogue</Link>
-                            <Link to="/cart" onClick={() => setIsMenuOpen(false)} className="hover:text-[#38bdf8] text-lg flex items-center gap-2">
+                            <Link to="/" onClick={() => setIsMenuOpen(false)} className="hover:text-accent text-lg">Home</Link>
+                            <Link to="/catalogue" onClick={() => setIsMenuOpen(false)} className="hover:text-accent text-lg">Catalogue</Link>
+                            <Link to="/cart" onClick={() => setIsMenuOpen(false)} className="hover:text-accent text-lg flex items-center gap-2">
                                 Cart {cartItemCount > 0 && `(${cartItemCount})`}
                             </Link>
                         </div>
@@ -87,9 +87,9 @@ const Layout = () => {
             </main>
 
             {/* Footer */}
-            <footer className="border-t border-white/10 bg-black/20 mt-auto">
+            <footer className="border-t border-border bg-surface mt-auto">
                 <div className="container mx-auto px-6 py-8 text-center text-sm">
-                    <p className="text-[#38bdf8]">&copy; {new Date().getFullYear()} United Associates Agencies. All rights reserved.</p>
+                    <p className="text-accent">&copy; {new Date().getFullYear()} United Associates Agencies. All rights reserved.</p>
                     <p className="mt-2 text-xs text-orange-400">Excellence in Optics</p>
                 </div>
             </footer>
