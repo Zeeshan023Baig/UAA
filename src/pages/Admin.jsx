@@ -58,7 +58,7 @@ const StockInput = ({ initialStock, onUpdate }) => {
 };
 
 const Admin = () => {
-    const { products, addProduct, restockProduct } = useProducts();
+    const { products, addProduct, restockProduct, importCatalog } = useProducts();
     const [activeTab, setActiveTab] = useState('inventory');
     const [orders, setOrders] = useState([]);
     const [loadingOrders, setLoadingOrders] = useState(true);
@@ -70,7 +70,8 @@ const Admin = () => {
         price: '',
         stock: '',
         image: '',
-        specs: ''
+        specs: '',
+        externalLink: ''
     });
     const [imageFile, setImageFile] = useState(null);
     const [isAdding, setIsAdding] = useState(false);
@@ -132,6 +133,17 @@ const Admin = () => {
         });
     };
 
+    const handleImportCatalog = async () => {
+        if (window.confirm("This will add 43 default products to your inventory. Are you sure?")) {
+            const result = await importCatalog();
+            if (result.success) {
+                alert("Catalog imported successfully! Please refresh if items don't appear immediately.");
+            } else {
+                alert("Import failed: " + result.error);
+            }
+        }
+    };
+
     const handleAddProduct = async (e) => {
         e.preventDefault();
         setIsAdding(true);
@@ -169,7 +181,8 @@ const Admin = () => {
                     price: '',
                     stock: '',
                     image: '',
-                    specs: ''
+                    specs: '',
+                    externalLink: ''
                 });
                 setImageFile(null);
             } else {
@@ -218,9 +231,19 @@ const Admin = () => {
                     {/* Add Product Form */}
                     <div className="lg:col-span-1">
                         <div className="bg-white/5 border border-white/10 p-6 rounded-sm sticky top-24">
-                            <h2 className="text-xl font-serif mb-6 flex items-center gap-2">
-                                <Plus className="w-5 h-5 text-[#38bdf8]" /> Add New Product
-                            </h2>
+                            <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-xl font-serif flex items-center gap-2">
+                                    <Plus className="w-5 h-5 text-[#38bdf8]" /> Add New Product
+                                </h2>
+                                <button
+                                    type="button"
+                                    onClick={handleImportCatalog}
+                                    className="text-[10px] uppercase tracking-wider text-[#38bdf8]/60 hover:text-[#38bdf8] border border-dashed border-[#38bdf8]/30 px-2 py-1 rounded-sm hover:bg-[#38bdf8]/5 transition-colors"
+                                    title="Import default products"
+                                >
+                                    Import Catalog
+                                </button>
+                            </div>
                             <form onSubmit={handleAddProduct} className="space-y-4">
                                 <input
                                     placeholder="Product Name"
@@ -235,6 +258,7 @@ const Admin = () => {
                                         <option value="In-house">In-house</option>
                                         <option value="International">International</option>
                                         <option value="Indian">Indian</option>
+                                        <option value="Lenses">Lenses</option>
                                     </select>
                                     <input
                                         type="number" placeholder="Price"
@@ -251,6 +275,11 @@ const Admin = () => {
                                     placeholder="Specs (e.g. Titanium Frame)"
                                     className="w-full bg-black/20 border border-white/10 p-2 text-sm text-white rounded-sm"
                                     value={newProduct.specs} onChange={e => setNewProduct({ ...newProduct, specs: e.target.value })}
+                                />
+                                <input
+                                    placeholder="External Link (Optional)"
+                                    className="w-full bg-black/20 border border-white/10 p-2 text-sm text-white rounded-sm"
+                                    value={newProduct.externalLink} onChange={e => setNewProduct({ ...newProduct, externalLink: e.target.value })}
                                 />
 
                                 <div className="space-y-2">

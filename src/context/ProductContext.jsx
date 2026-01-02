@@ -1,68 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { db } from '../lib/firebase';
 import { collection, onSnapshot, doc, runTransaction, writeBatch, addDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { initialProducts } from '../data/products';
 
 const ProductContext = createContext();
 
 export const useProducts = () => useContext(ProductContext);
-
-// Initial static products to seed the database if empty
-const INITIAL_PRODUCTS = [
-    {
-        id: "1",
-        name: "The Executive",
-        price: 249,
-        category: "Indian",
-        image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=800&q=80",
-        specs: "Titanium Frame • Blue Light Filter • Anti-Reflective",
-        stock: 50
-    },
-    {
-        id: "2",
-        name: "Midnight Aviator",
-        price: 189,
-        category: "International",
-        image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80",
-        specs: "Matte Black Metal • Polarized Lens • UV400 Protection",
-        stock: 50
-    },
-    {
-        id: "3",
-        name: "Classic Wayfarer",
-        price: 159,
-        category: "International",
-        image: "https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&w=800&q=80",
-        specs: "Acetate Frame • Green G-15 Lens • Iconic Design",
-        stock: 50
-    },
-    {
-        id: "4",
-        name: "Rose Gold Round",
-        price: 210,
-        category: "Indian",
-        image: "https://images.unsplash.com/photo-1591076482161-42ce6da69f67?auto=format&fit=crop&w=800&q=80",
-        specs: "Rose Gold Metal • Clear Lens • Adjustable Nose Pads",
-        stock: 50
-    },
-    {
-        id: "5",
-        name: "Tortoise Shell",
-        price: 175,
-        category: "Indian",
-        image: "https://images.unsplash.com/photo-1483412901819-729f52271844?auto=format&fit=crop&w=800&q=80",
-        specs: "Handmade Acetate • Standard Fit • Premium Hinges",
-        stock: 50
-    },
-    {
-        id: "6",
-        name: "Sport Shield",
-        price: 299,
-        category: "In-house",
-        image: "https://images.unsplash.com/photo-1614715838608-dd527c2dc42c?auto=format&fit=crop&w=800&q=80",
-        specs: "Polycarbonate Lens • Impact Resistant • Hydrophobic Coating",
-        stock: 50
-    },
-];
 
 export const ProductProvider = ({ children }) => {
     const [products, setProducts] = useState([]);
@@ -72,16 +15,21 @@ export const ProductProvider = ({ children }) => {
         // Real-time listener
         const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
             if (snapshot.empty) {
-                // If DB is empty, seed it (only needs to happen once ideally, but useful for first run)
-                seedDatabase();
-            } else {
-                const productsData = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-                setProducts(productsData.sort((a, b) => a.id.localeCompare(b.id))); // Keep consistent order
-                setLoading(false);
+                // Optional: Auto-seed if truly empty, or let admin do it manually via the new button
+                // seedDatabase(); 
             }
+
+            const productsData = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            // Sort: Put items with 'stock' > 0 first, then by name
+            setProducts(productsData.sort((a, b) => {
+                if (a.stock > 0 && b.stock <= 0) return -1;
+                if (a.stock <= 0 && b.stock > 0) return 1;
+                return a.name.localeCompare(b.name);
+            }));
+            setLoading(false);
         }, (error) => {
             console.error("Error fetching products:", error);
             setLoading(false);
@@ -90,17 +38,32 @@ export const ProductProvider = ({ children }) => {
         return () => unsubscribe();
     }, []);
 
-    const seedDatabase = async () => {
+    const importCatalog = async () => {
         try {
             const batch = writeBatch(db);
-            INITIAL_PRODUCTS.forEach(product => {
-                const docRef = doc(db, "products", product.id);
+            // We use the product name (sanitized) or a simple counter as ID to avoid duplicates if re-importing, 
+            // or just let Firestore generate IDs. 
+            // Better to let Firestore generate IDs but check for duplicates if we cared. 
+            // For this "Reset/Import" feature, we'll just add them. 
+            // Optimization: To prevent duplicates on multiple clicks, we could delete all existing first, 
+            // but that deletes order history references potentially. 
+            // Let's just add them and let the user manage it, or check by name.
+
+            // Simpler approach for "Import": Just add them all. User can clear db if they want.
+            // OR: We can use the name as the doc ID to enforce uniqueness
+
+            initialProducts.forEach(product => {
+                // Create a doc reference with a specific ID (slugified name) to prevent duplicates
+                const docId = product.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                const docRef = doc(db, "products", docId);
                 batch.set(docRef, product);
             });
+
             await batch.commit();
-            console.log("Database seeded successfully!");
+            return { success: true };
         } catch (error) {
-            console.error("Error seeding database:", error);
+            console.error("Error importing catalog:", error);
+            return { success: false, error: error.message };
         }
     };
 
@@ -182,7 +145,7 @@ export const ProductProvider = ({ children }) => {
     };
 
     return (
-        <ProductContext.Provider value={{ products, loading, purchaseItems, addProduct, restockProduct }}>
+        <ProductContext.Provider value={{ products, loading, purchaseItems, addProduct, restockProduct, importCatalog }}>
             {children}
         </ProductContext.Provider>
     );

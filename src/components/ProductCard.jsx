@@ -129,41 +129,52 @@ const ProductCard = ({ product }) => {
 
             {/* Quantity Input Area */}
             {!isOutOfStock && (
-                <div className="flex gap-2">
-                    <input
-                        type="number"
-                        min="1"
-                        max={product.stock}
-                        value={inputValue}
-                        onChange={handleInputChange}
-                        onBlur={handleInputBlur}
-                        className="w-20 bg-white/5 border border-white/10 text-center text-white p-3 rounded-sm focus:border-[#38bdf8] focus:outline-none"
-                    />
+                product.externalLink ? (
+                    <a
+                        href={product.externalLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-3 border border-white/10 bg-white/5 text-white/80 hover:bg-[#38bdf8] hover:text-primary hover:border-[#38bdf8] flex items-center justify-center gap-2 uppercase text-xs tracking-widest font-bold transition-colors duration-300"
+                    >
+                        <Info className="w-4 h-4" /> View Details
+                    </a>
+                ) : (
+                    <div className="flex gap-2">
+                        <input
+                            type="number"
+                            min="1"
+                            max={product.stock}
+                            value={inputValue}
+                            onChange={handleInputChange}
+                            onBlur={handleInputBlur}
+                            className="w-20 bg-white/5 border border-white/10 text-center text-white p-3 rounded-sm focus:border-[#38bdf8] focus:outline-none"
+                        />
 
-                    {quantityInCart === 0 ? (
-                        <button
-                            onClick={handleAction}
-                            className="flex-1 py-3 border border-white/10 bg-white/5 text-white/80 hover:bg-[#38bdf8] hover:text-primary hover:border-[#38bdf8] flex items-center justify-center gap-2 uppercase text-xs tracking-widest font-bold transition-colors duration-300"
-                        >
-                            <ShoppingBag className="w-4 h-4" /> Add to Cart
-                        </button>
-                    ) : (
-                        <div className="flex-1 flex items-center justify-center gap-2 text-green-400 text-xs font-bold uppercase tracking-widest border border-white/10 bg-white/5 rounded-sm">
-                            <span className="animate-pulse">In Cart</span>
-                        </div>
-                    )}
+                        {quantityInCart === 0 ? (
+                            <button
+                                onClick={handleAction}
+                                className="flex-1 py-3 border border-white/10 bg-white/5 text-white/80 hover:bg-[#38bdf8] hover:text-primary hover:border-[#38bdf8] flex items-center justify-center gap-2 uppercase text-xs tracking-widest font-bold transition-colors duration-300"
+                            >
+                                <ShoppingBag className="w-4 h-4" /> Add to Cart
+                            </button>
+                        ) : (
+                            <div className="flex-1 flex items-center justify-center gap-2 text-green-400 text-xs font-bold uppercase tracking-widest border border-white/10 bg-white/5 rounded-sm">
+                                <span className="animate-pulse">In Cart</span>
+                            </div>
+                        )}
 
-                    {quantityInCart > 0 && (
-                        <button
-                            onClick={() => removeFromCart(product.id)}
-                            className="px-4 border border-red-500/50 text-red-400 hover:bg-red-500 hover:text-white transition-colors rounded-sm"
-                            title="Remove from cart"
-                        >
-                            <span className="sr-only">Remove</span>
-                            x
-                        </button>
-                    )}
-                </div>
+                        {quantityInCart > 0 && (
+                            <button
+                                onClick={() => removeFromCart(product.id)}
+                                className="px-4 border border-red-500/50 text-red-400 hover:bg-red-500 hover:text-white transition-colors rounded-sm"
+                                title="Remove from cart"
+                            >
+                                <span className="sr-only">Remove</span>
+                                x
+                            </button>
+                        )}
+                    </div>
+                )
             )}
             {isOutOfStock && (
                 <button
