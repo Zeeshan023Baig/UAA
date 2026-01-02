@@ -45,27 +45,27 @@ const Home = () => {
 
             {/* Philosophy Section */}
             <section className="container mx-auto px-6">
-                <div className="bg-white/5 border border-white/10 rounded-xl p-8 md:p-12 text-center md:text-left flex flex-col md:flex-row items-center gap-12">
+                <div className="bg-surface border border-border rounded-xl p-8 md:p-12 text-center md:text-left flex flex-col md:flex-row items-center gap-12">
                     <div className="md:w-1/2 space-y-6">
-                        <span className="text-[#38bdf8] text-sm font-bold tracking-[0.2em] uppercase">Our Philosophy</span>
-                        <h2 className="text-3xl md:text-4xl font-serif text-white">Vision Beyond Sight</h2>
-                        <p className="text-white/60 leading-relaxed">
+                        <span className="text-accent text-sm font-bold tracking-[0.2em] uppercase">Our Philosophy</span>
+                        <h2 className="text-3xl md:text-4xl font-serif text-primary">Vision Beyond Sight</h2>
+                        <p className="text-muted leading-relaxed">
                             We believe that eyewear is more than just a utility—it's an extension of your personality.
                             Every frame in our collection is selected for its craftsmanship, durability, and timeless style.
                             We are dedicated to bringing you the world's finest optical engineering.
                         </p>
                         <div className="flex gap-8 pt-4">
                             <div className="text-center md:text-left">
-                                <p className="text-2xl font-bold text-white">100+</p>
-                                <p className="text-xs text-white/40 uppercase tracking-wider">Premium Brands</p>
+                                <p className="text-2xl font-bold text-primary">100+</p>
+                                <p className="text-xs text-muted uppercase tracking-wider">Premium Brands</p>
                             </div>
                             <div className="text-center md:text-left">
-                                <p className="text-2xl font-bold text-white">24/7</p>
-                                <p className="text-xs text-white/40 uppercase tracking-wider">Support</p>
+                                <p className="text-2xl font-bold text-primary">24/7</p>
+                                <p className="text-xs text-muted uppercase tracking-wider">Support</p>
                             </div>
                             <div className="text-center md:text-left">
-                                <p className="text-2xl font-bold text-white">Instant</p>
-                                <p className="text-xs text-white/40 uppercase tracking-wider">Delivery</p>
+                                <p className="text-2xl font-bold text-primary">Instant</p>
+                                <p className="text-xs text-muted uppercase tracking-wider">Delivery</p>
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@ const Home = () => {
                         <img
                             src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80"
                             alt="Philosophy"
-                            className="rounded-lg object-cover w-full h-full shadow-2xl border border-white/10"
+                            className="rounded-lg object-cover w-full h-full shadow-2xl border border-border"
                         />
                     </div>
                 </div>
@@ -83,10 +83,10 @@ const Home = () => {
             <section className="container mx-auto px-6 py-12">
                 <div className="flex justify-between items-end mb-12">
                     <div>
-                        <span className="text-[#38bdf8] text-sm font-bold tracking-[0.2em] uppercase">Trending</span>
-                        <h2 className="text-3xl font-serif text-white mt-2">Latest Arrivals</h2>
+                        <span className="text-accent text-sm font-bold tracking-[0.2em] uppercase">Trending</span>
+                        <h2 className="text-3xl font-serif text-primary mt-2">Latest Arrivals</h2>
                     </div>
-                    <Link to="/catalogue" className="hidden md:flex items-center gap-2 text-white/60 hover:text-[#38bdf8] transition-colors text-sm uppercase tracking-widest">
+                    <Link to="/catalogue" className="hidden md:flex items-center gap-2 text-muted hover:text-accent transition-colors text-sm uppercase tracking-widest">
                         View All <ArrowRight className="w-4 h-4" />
                     </Link>
                 </div>
@@ -94,26 +94,26 @@ const Home = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {featuredProducts.map(product => (
                         <div key={product.id} className="group cursor-pointer">
-                            <div className="overflow-hidden rounded-md bg-white/5 mb-4 aspect-[4/3] relative">
+                            <div className="overflow-hidden rounded-md bg-surface mb-4 aspect-[4/3] relative">
                                 <img
                                     src={product.image}
                                     alt={product.name}
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                 />
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                    <Link to="/catalogue" className="bg-[#38bdf8] text-primary px-6 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                    <Link to="/catalogue" className="bg-accent text-primary px-6 py-2 rounded-full font-bold text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                                         View Details
                                     </Link>
                                 </div>
                             </div>
-                            <h3 className="text-lg font-serif text-white group-hover:text-[#38bdf8] transition-colors">{product.name}</h3>
-                            <p className="text-sm text-white/40">{product.category}</p>
-                            <p className="text-[#38bdf8] font-bold mt-1">₹{product.price}</p>
+                            <h3 className="text-lg font-serif text-primary group-hover:text-accent transition-colors">{product.name}</h3>
+                            <p className="text-sm text-muted">{product.category}</p>
+                            <p className="text-accent font-bold mt-1">₹{product.price}</p>
                         </div>
                     ))}
                 </div>
                 <div className="mt-8 text-center md:hidden">
-                    <Link to="/catalogue" className="inline-flex items-center gap-2 text-white/60 hover:text-[#38bdf8] transition-colors text-sm uppercase tracking-widest">
+                    <Link to="/catalogue" className="inline-flex items-center gap-2 text-muted hover:text-accent transition-colors text-sm uppercase tracking-widest">
                         View All <ArrowRight className="w-4 h-4" />
                     </Link>
                 </div>
@@ -121,7 +121,7 @@ const Home = () => {
 
             {/* Features Overview */}
             <section className="grid grid-cols-1 md:grid-cols-2 gap-8 container mx-auto px-6">
-                <Link to="/catalogue" className="block p-8 border border-white/10 bg-[#1e293b] hover:border-[#38bdf8]/50 transition-colors duration-500 group rounded-xl">
+                <Link to="/catalogue" className="block p-8 border border-border bg-surface hover:border-accent/50 transition-colors duration-500 group rounded-xl">
                     <div className="overflow-hidden rounded-lg mb-6 h-48">
                         <img
                             src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=800&q=80"
@@ -129,16 +129,16 @@ const Home = () => {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                     </div>
-                    <h3 className="text-2xl font-serif mb-4 text-white">Premium Eyewear</h3>
-                    <p className="text-white/60 mb-6 leading-relaxed">
+                    <h3 className="text-2xl font-serif mb-4 text-primary">Premium Eyewear</h3>
+                    <p className="text-muted mb-6 leading-relaxed">
                         Discover our curated collection of luxury frames and lenses, designed for those who appreciate distinction.
                     </p>
-                    <span className="text-[#38bdf8] text-sm tracking-widest uppercase group-hover:text-white transition-colors flex items-center gap-2">
+                    <span className="text-accent text-sm tracking-widest uppercase group-hover:text-primary transition-colors flex items-center gap-2">
                         View Collection <ArrowRight className="w-4 h-4" />
                     </span>
                 </Link>
 
-                <Link to="/catalogue" className="block p-8 border border-white/10 bg-[#1e293b] hover:border-[#38bdf8]/50 transition-colors duration-500 group rounded-xl">
+                <Link to="/catalogue" className="block p-8 border border-border bg-surface hover:border-accent/50 transition-colors duration-500 group rounded-xl">
                     <div className="overflow-hidden rounded-lg mb-6 h-48">
                         <img
                             src="https://images.unsplash.com/photo-1504194569429-ca0152bc2a3f?auto=format&fit=crop&w=800&q=80"
@@ -146,11 +146,11 @@ const Home = () => {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                     </div>
-                    <h3 className="text-2xl font-serif mb-4 text-white">Precision Lenses</h3>
-                    <p className="text-white/60 mb-6 leading-relaxed">
+                    <h3 className="text-2xl font-serif mb-4 text-primary">Precision Lenses</h3>
+                    <p className="text-muted mb-6 leading-relaxed">
                         Advanced digital surfacing and protective coatings for crystal clear vision in every environment.
                     </p>
-                    <span className="text-[#38bdf8] text-sm tracking-widest uppercase group-hover:text-white transition-colors flex items-center gap-2">
+                    <span className="text-accent text-sm tracking-widest uppercase group-hover:text-primary transition-colors flex items-center gap-2">
                         View Lens Options <ArrowRight className="w-4 h-4" />
                     </span>
                 </Link>
