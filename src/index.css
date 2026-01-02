@@ -15,11 +15,14 @@
 
   /* Light Mode Overrides */
   .light {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f1f5f9;
+    --bg-primary: #f1f5f9;
+    /* Soft Slate-50 instead of pure white */
+    --bg-secondary: #e2e8f0;
+    /* Slate-200 for cards */
     --text-primary: #0f172a;
     --text-secondary: #475569;
-    --accent-color: #0ea5e9;
+    --accent-color: #0284c7;
+    /* Darker blue for better contrast on light bg */
     --border-color: rgba(15, 23, 42, 0.1);
   }
 
