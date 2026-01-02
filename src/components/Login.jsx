@@ -19,33 +19,33 @@ const Login = ({ onLogin }) => {
 
     return (
         <div className="flex items-center justify-center min-h-[60vh]">
-            <div className="w-full max-w-md bg-[#1e293b] border border-white/10 p-8 rounded-xl shadow-2xl">
+            <div className="w-full max-w-md bg-surface border border-border p-8 rounded-xl shadow-2xl">
                 <div className="text-center mb-8">
-                    <div className="w-12 h-12 bg-[#38bdf8]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Lock className="w-6 h-6 text-[#38bdf8]" />
+                    <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Lock className="w-6 h-6 text-accent" />
                     </div>
-                    <h2 className="text-2xl font-serif text-white">Admin Access</h2>
-                    <p className="text-white/40 text-sm mt-2">Please enter your credentials</p>
+                    <h2 className="text-2xl font-serif text-primary">Admin Access</h2>
+                    <p className="text-muted text-sm mt-2">Please enter your credentials</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-xs uppercase tracking-wider text-white/60 mb-2">Email</label>
+                        <label className="block text-xs uppercase tracking-wider text-muted mb-2">Email</label>
                         <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full bg-black/20 border border-white/10 rounded-sm px-4 py-3 text-white focus:border-[#38bdf8] focus:outline-none transition-colors"
+                            className="w-full bg-primary border border-border rounded-sm px-4 py-3 text-primary focus:border-accent focus:outline-none transition-colors"
                             placeholder="admin@example.com"
                         />
                     </div>
                     <div>
-                        <label className="block text-xs uppercase tracking-wider text-white/60 mb-2">Password</label>
+                        <label className="block text-xs uppercase tracking-wider text-muted mb-2">Password</label>
                         <input
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full bg-black/20 border border-white/10 rounded-sm px-4 py-3 text-white focus:border-[#38bdf8] focus:outline-none transition-colors"
+                            className="w-full bg-primary border border-border rounded-sm px-4 py-3 text-primary focus:border-accent focus:outline-none transition-colors"
                             placeholder="••••••••"
                         />
                     </div>

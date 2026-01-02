@@ -257,12 +257,12 @@ const Admin = () => {
                             <form onSubmit={handleAddProduct} className="space-y-4">
                                 <input
                                     placeholder="Product Name"
-                                    className="w-full bg-black/20 border border-white/10 p-2 text-sm text-white rounded-sm"
+                                    className="w-full bg-primary border border-border p-2 text-sm text-primary rounded-sm placeholder:text-muted"
                                     value={newProduct.name} onChange={e => setNewProduct({ ...newProduct, name: e.target.value })} required
                                 />
                                 <div className="grid grid-cols-2 gap-4">
                                     <select
-                                        className="bg-black/20 border border-white/10 p-2 text-sm text-white rounded-sm"
+                                        className="bg-primary border border-border p-2 text-sm text-primary rounded-sm"
                                         value={newProduct.category} onChange={e => setNewProduct({ ...newProduct, category: e.target.value })}
                                     >
                                         <option value="In-house">In-house</option>
