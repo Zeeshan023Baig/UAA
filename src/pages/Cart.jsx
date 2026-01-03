@@ -24,7 +24,7 @@ const Cart = () => {
             // Sign up at https://www.emailjs.com/
             const SERVICE_ID = "service_siw244i";
             const TEMPLATE_ID = "template_6984agq";
-            const PUBLIC_KEY = "YpglawHtCtJ1-mbWw";
+            const PUBLIC_KEY = "YpgIawHtCtJ1-mbWw";
 
             await emailjs.send(
                 SERVICE_ID.trim(),
