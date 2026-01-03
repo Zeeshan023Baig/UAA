@@ -151,22 +151,23 @@ const Cart = () => {
                         <p>Phone: {lastOrder.customer.phone}</p>
                     </div>
 
-                    <div className="bg-accent/5 border border-accent/20 p-4 rounded-sm">
-                        <p className="text-accent text-xs font-bold uppercase tracking-widest mb-2">Share with Boss / Manager</p>
-                        <p className="text-slate-500 dark:text-slate-400 text-xs mb-3">Send this link to allow them to edit the order:</p>
+                    {/* Highlighting this section with a Dark Box as requested */}
+                    <div className="bg-slate-900 p-6 rounded-sm shadow-inner border border-slate-700">
+                        <p className="text-yellow-400 text-xs font-bold uppercase tracking-widest mb-2">Share with Boss / Manager</p>
+                        <p className="text-slate-300 text-xs mb-3">Send this link to allow them to edit the order:</p>
 
                         <div className="flex gap-2">
                             <input
                                 readOnly
                                 value={`${window.location.origin}/order/${lastOrder.id}/edit`}
-                                className="bg-white dark:bg-black/20 border border-border text-slate-900 dark:text-white text-xs p-2 rounded-sm flex-grow outline-none select-all"
+                                className="bg-black/30 border border-slate-600 text-slate-200 text-xs p-2 rounded-sm flex-grow outline-none select-all font-mono"
                             />
                             <button
                                 onClick={() => {
                                     navigator.clipboard.writeText(`${window.location.origin}/order/${lastOrder.id}/edit`);
                                     alert("Link copied to clipboard!");
                                 }}
-                                className="bg-white dark:bg-white/10 hover:bg-slate-100 dark:hover:bg-white/20 text-slate-900 dark:text-white border border-border px-3 rounded-sm transition-colors text-xs font-bold"
+                                className="bg-slate-700 hover:bg-slate-600 text-white border border-slate-600 px-3 rounded-sm transition-colors text-xs font-bold"
                             >
                                 Copy
                             </button>
@@ -175,7 +176,7 @@ const Cart = () => {
                         <button
                             onClick={handleSendEmail}
                             disabled={sendingEmail}
-                            className="w-full mt-3 flex justify-center items-center gap-2 text-accent hover:text-primary text-xs font-bold uppercase tracking-widest transition-colors py-2 border border-accent/30 hover:bg-accent rounded-sm"
+                            className="w-full mt-4 flex justify-center items-center gap-2 bg-accent hover:bg-accent/90 text-white text-xs font-bold uppercase tracking-widest transition-colors py-3 rounded-sm shadow-lg"
                         >
                             {sendingEmail ? <Loader className="w-3 h-3 animate-spin" /> : 'Send via Email'}
                         </button>
