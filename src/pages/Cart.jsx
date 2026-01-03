@@ -69,7 +69,7 @@ const Cart = () => {
 
         setIsCheckingOut(false);
         if (result.success) {
-            setLastOrder({ items: currentCart, total: currentTotal, id: Math.random().toString(36).substr(2, 9), customer });
+            setLastOrder({ items: currentCart, total: currentTotal, id: result.orderId, customer });
             clearCart();
             setCustomer({ name: '', email: '', phone: '' });
         } else {

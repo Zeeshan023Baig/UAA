@@ -69,7 +69,7 @@ export const ProductProvider = ({ children }) => {
 
     const purchaseItems = async (cartItems, customerDetails = null) => {
         try {
-            await runTransaction(db, async (transaction) => {
+            const orderId = await runTransaction(db, async (transaction) => {
                 // 1. Perform ALL reads first
                 const productDocs = [];
                 for (const item of cartItems) {
@@ -108,8 +108,9 @@ export const ProductProvider = ({ children }) => {
                     date: new Date().toISOString(),
                     timestamp: serverTimestamp()
                 });
+                return orderRef.id;
             });
-            return { success: true };
+            return { success: true, orderId };
         } catch (error) {
             console.error("Transaction failed: ", error);
             return { success: false, error: error.message };
