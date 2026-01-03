@@ -1,8 +1,9 @@
 import { useCart } from '../context/CartContext';
 import { useProducts } from '../context/ProductContext';
-import { Trash2, Plus, Minus, ArrowRight, Loader } from 'lucide-react';
+import { Trash2, Plus, Minus, ArrowRight, Loader, ShoppingBag } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import ProductCard from '../components/ProductCard';
 
 import emailjs from '@emailjs/browser';
 
@@ -21,22 +22,27 @@ const Cart = () => {
         try {
             // !IMPORTANT: You must replace these placeholders with your actual EmailJS credentials
             // Sign up at https://www.emailjs.com/
-            const SERVICE_ID = "service_siw244i"; // Updated from screenshot
-            const TEMPLATE_ID = "template_6984agq"; // Updated from user
-            const PUBLIC_KEY = "YpglawHtCtJ1-mbWw"; // Updated from screenshot
+            const SERVICE_ID = "service_siw244i";
+            const TEMPLATE_ID = "template_6984agq";
+            const PUBLIC_KEY = "YpglawHtCtJ1-mbWw";
 
-            await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-                to_email: lastOrder.customer.email,
-                to_name: lastOrder.customer.name,
-                order_id: lastOrder.id,
-                order_link: `${window.location.origin}/order/${lastOrder.id}/edit`,
-                total: lastOrder.total,
-                branch: lastOrder.customer.branch
-            }, PUBLIC_KEY);
+            await emailjs.send(
+                SERVICE_ID.trim(),
+                TEMPLATE_ID.trim(),
+                {
+                    to_email: lastOrder.customer.email,
+                    to_name: lastOrder.customer.name,
+                    order_id: lastOrder.id,
+                    order_link: `${window.location.origin}/order/${lastOrder.id}/edit`,
+                    total: lastOrder.total,
+                    branch: lastOrder.customer.branch || 'N/A'
+                },
+                PUBLIC_KEY.trim()
+            );
             alert("Email sent successfully!");
         } catch (error) {
             console.error("Email failed:", error);
-            alert("Failed to send email. Please check internet connection.");
+            alert(`Failed to send email. Error: ${error.text || error.message || JSON.stringify(error)}`);
         } finally {
             setSendingEmail(false);
         }
@@ -151,13 +157,38 @@ const Cart = () => {
         );
     }
 
+    const { products } = useProducts();
+
     if (cartItems.length === 0) {
+        // Get 3 random or top products for specific suggestions
+        const suggestedProducts = products.filter(p => p.stock > 0).slice(0, 3);
+
         return (
-            <div className="text-center py-20 space-y-6">
-                <h2 className="text-3xl font-serif text-white/40">Your cart is empty</h2>
-                <Link to="/catalogue" className="inline-flex items-center gap-2 text-[#38bdf8] hover:text-white transition-colors uppercase tracking-widest text-sm">
-                    Continue Shopping <ArrowRight className="w-4 h-4" />
-                </Link>
+            <div className="max-w-6xl mx-auto space-y-12">
+                <div className="text-center py-16 space-y-6 bg-surface border border-border rounded-sm">
+                    <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto animate-bounce">
+                        <ShoppingBag className="w-10 h-10 text-accent" />
+                    </div>
+                    <div className="space-y-2">
+                        <h2 className="text-3xl font-serif text-secondary">Your cart is empty</h2>
+                        <p className="text-muted">Looks like you haven't added anything yet.</p>
+                    </div>
+                    <Link to="/catalogue" className="inline-flex items-center gap-2 bg-accent text-primary px-8 py-3 rounded-sm font-bold uppercase tracking-widest hover:bg-opacity-90 transition-colors">
+                        Start Shopping <ArrowRight className="w-4 h-4" />
+                    </Link>
+                </div>
+
+                {/* Suggested Items */}
+                {suggestedProducts.length > 0 && (
+                    <div className="space-y-6">
+                        <h3 className="text-2xl font-serif text-secondary border-b border-border pb-4">Trending Now</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {suggestedProducts.map(product => (
+                                <ProductCard key={product.id} product={product} />
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }
