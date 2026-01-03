@@ -1,7 +1,7 @@
 // useCart is now used inside ProductCard
 import { useProducts } from '../context/ProductContext';
-import { ShoppingBag, Info, Loader, Search } from 'lucide-react';
-import { useState } from 'react';
+import { ShoppingBag, Info, Loader, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
 
 const Catalogue = () => {
@@ -9,6 +9,13 @@ const Catalogue = () => {
     const { products, loading } = useProducts();
     const [activeCategory, setActiveCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 12;
+
+    // Reset to page 1 when category or search changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [activeCategory, searchQuery]);
 
     if (loading) {
         return (
@@ -25,36 +32,39 @@ const Catalogue = () => {
         return matchesCategory && matchesSearch;
     });
 
+    // Pagination Logic
+    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const paginatedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+            // Optional: Scroll to top of grid
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
     return (
 
-        <div className="space-y-12">
+        <div className="space-y-12 pb-12">
             <header className="text-center space-y-4">
-                <h1 className="text-4xl md:text-5xl font-serif text-white">The Collection</h1>
-                <p className="text-white/60 max-w-xl mx-auto">
+                <h1 className="text-4xl md:text-5xl font-serif text-secondary">The Collection</h1>
+                <p className="text-muted max-w-xl mx-auto">
                     Meticulously crafted eyewear for the discerning individual.
                     Choose from our exclusive range of optical and solar frames.
                 </p>
 
-                {/* Search Bar */}
-                <div className="max-w-md mx-auto relative mt-8">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
-                    <input
-                        type="text"
-                        placeholder="Search for frames..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-full py-3 pl-10 pr-4 text-white placeholder:text-white/40 focus:outline-none focus:border-[#38bdf8] transition-colors"
-                    />
-                </div>
+
             </header>
 
             {/* Filter Tabs */}
-            <div className="flex justify-center gap-6 border-b border-white/10 pb-4">
+            <div className="flex justify-center gap-6 border-b border-border pb-4">
                 {['All', 'In-house', 'International', 'Indian'].map(cat => (
                     <button
                         key={cat}
                         onClick={() => setActiveCategory(cat)}
-                        className={`text-sm tracking-widest uppercase pb-4 border-b-2 transition-colors ${activeCategory === cat ? 'border-[#38bdf8] text-[#38bdf8]' : 'border-transparent text-white/40 hover:text-white'
+                        className={`text-sm tracking-widest uppercase pb-4 border-b-2 transition-colors ${activeCategory === cat ? 'border-accent text-accent' : 'border-transparent text-muted hover:text-secondary'
                             }`}
                     >
                         {cat}
@@ -64,10 +74,51 @@ const Catalogue = () => {
 
             {/* Product Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-                {filteredProducts.map(product => (
+                {paginatedProducts.map(product => (
                     <ProductCard key={product.id} product={product} />
                 ))}
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-4 mt-12">
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="p-2 border border-border rounded-sm hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-secondary"
+                    >
+                        <ChevronLeft className="w-5 h-5" />
+                    </button>
+
+                    <span className="text-sm font-medium text-secondary">
+                        Page {currentPage} of {totalPages}
+                    </span>
+
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="p-2 border border-border rounded-sm hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-secondary"
+                    >
+                        <ChevronRight className="w-5 h-5" />
+                    </button>
+                </div>
+            )}
+
+            {/* Search Bar */}
+            <div className="max-w-md mx-auto relative mt-12 mb-8">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
+                <input
+                    type="text"
+                    placeholder="Search for frames..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-surface border border-border rounded-full py-3 pl-10 pr-4 text-secondary placeholder:text-muted focus:outline-none focus:border-accent transition-colors shadow-lg"
+                />
+            </div>
+
+            {filteredProducts.length === 0 && (
+                <div className="text-center py-12 text-muted">No products found.</div>
+            )}
         </div>
     );
 };

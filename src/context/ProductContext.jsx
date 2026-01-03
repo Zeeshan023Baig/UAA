@@ -144,8 +144,78 @@ export const ProductProvider = ({ children }) => {
         }
     };
 
+    const updateProduct = async (productId, updates) => {
+        try {
+            const productRef = doc(db, "products", productId);
+            // Ensure numbers are actually numbers
+            const sanitizedUpdates = { ...updates };
+            if (sanitizedUpdates.price !== undefined) sanitizedUpdates.price = Number(sanitizedUpdates.price);
+            if (sanitizedUpdates.stock !== undefined) sanitizedUpdates.stock = Number(sanitizedUpdates.stock);
+
+            await updateDoc(productRef, sanitizedUpdates);
+            return { success: true };
+        } catch (error) {
+            console.error("Error updating product: ", error);
+            return { success: false, error: error.message };
+        }
+    };
+
+    const updateOrderItems = async (orderId, newItems) => {
+        try {
+            await runTransaction(db, async (transaction) => {
+                const orderRef = doc(db, "orders", orderId);
+                const orderDoc = await transaction.get(orderRef);
+
+                if (!orderDoc.exists()) {
+                    throw new Error("Order not found!");
+                }
+
+                const oldItems = orderDoc.data().items;
+
+                // 1. Prepare Product Refs
+                const productIds = new Set([...oldItems.map(i => i.id), ...newItems.map(i => i.id)]);
+                const productDocs = {};
+
+                for (const pid of productIds) {
+                    const pRef = doc(db, "products", pid);
+                    const pDoc = await transaction.get(pRef);
+                    if (!pDoc.exists()) throw new Error(`Product ${pid} not found!`);
+                    productDocs[pid] = { ref: pRef, data: pDoc.data() };
+                }
+
+                // 2. Revert Old Stock (Add back)
+                for (const item of oldItems) {
+                    productDocs[item.id].data.stock += item.quantity;
+                }
+
+                // 3. Apply New Stock (Deduct) & Check Availability
+                for (const item of newItems) {
+                    if (productDocs[item.id].data.stock < item.quantity) {
+                        throw new Error(`Not enough stock for ${item.name}! Max available: ${productDocs[item.id].data.stock}`);
+                    }
+                    productDocs[item.id].data.stock -= item.quantity;
+                }
+
+                // 4. Write Stock Updates
+                for (const pid of productIds) {
+                    transaction.update(productDocs[pid].ref, { stock: productDocs[pid].data.stock });
+                }
+
+                // 5. Update Order
+                transaction.update(orderRef, {
+                    items: newItems,
+                    total: newItems.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+                });
+            });
+            return { success: true };
+        } catch (error) {
+            console.error("Update Order Failed: ", error);
+            return { success: false, error: error.message };
+        }
+    };
+
     return (
-        <ProductContext.Provider value={{ products, loading, purchaseItems, addProduct, restockProduct, importCatalog }}>
+        <ProductContext.Provider value={{ products, loading, purchaseItems, addProduct, restockProduct, updateProduct, importCatalog, updateOrderItems }}>
             {children}
         </ProductContext.Provider>
     );

@@ -35,7 +35,7 @@ const Login = ({ onLogin }) => {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full bg-primary border border-border rounded-sm px-4 py-3 text-primary focus:border-accent focus:outline-none transition-colors"
+                            className="w-full bg-white dark:bg-black/20 border border-border rounded-sm px-4 py-3 text-slate-900 dark:text-white focus:border-accent focus:outline-none transition-colors"
                             placeholder="admin@example.com"
                         />
                     </div>
@@ -45,7 +45,7 @@ const Login = ({ onLogin }) => {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full bg-primary border border-border rounded-sm px-4 py-3 text-primary focus:border-accent focus:outline-none transition-colors"
+                            className="w-full bg-white dark:bg-black/20 border border-border rounded-sm px-4 py-3 text-slate-900 dark:text-white focus:border-accent focus:outline-none transition-colors"
                             placeholder="••••••••"
                         />
                     </div>

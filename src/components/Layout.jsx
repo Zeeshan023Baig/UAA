@@ -13,7 +13,7 @@ const Layout = () => {
         <div className="min-h-screen flex flex-col bg-primary text-secondary font-sans selection:bg-[#38bdf8] selection:text-primary transition-colors duration-300">
             <div id="page-top" className="absolute top-0 w-full h-0" />
             {/* Navbar */}
-            <nav className="sticky top-0 z-50 bg-primary/95 backdrop-blur-sm border-b border-white/10 transition-colors duration-300">
+            <nav className="relative z-50 bg-primary/95 backdrop-blur-sm border-b border-border transition-colors duration-300">
                 <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                     <div className="flex flex-col items-center">
                         <Link to="/" className="block w-16 md:w-24">

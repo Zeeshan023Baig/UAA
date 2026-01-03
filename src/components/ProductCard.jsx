@@ -89,7 +89,7 @@ const ProductCard = ({ product }) => {
 
     return (
         <div className="group flex flex-col space-y-4">
-            <div className="relative aspect-[4/3] overflow-hidden bg-white/5 rounded-sm">
+            <div className="relative aspect-[4/3] overflow-hidden bg-surface rounded-sm">
                 <img
                     src={product.image}
                     alt={product.name}
@@ -98,7 +98,7 @@ const ProductCard = ({ product }) => {
                 {!isOutOfStock && (
                     <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                         <p className="text-xs text-white/80 flex items-center gap-2">
-                            <Info className="w-3 h-3 text-[#38bdf8]" /> {product.specs}
+                            <Info className="w-3 h-3 text-accent" /> {product.specs}
                         </p>
                     </div>
                 )}
@@ -108,7 +108,7 @@ const ProductCard = ({ product }) => {
                     </div>
                 )}
                 {quantityInCart > 0 && (
-                    <div className="absolute top-2 right-2 bg-[#38bdf8] text-primary font-bold w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
+                    <div className="absolute top-2 right-2 bg-accent text-primary font-bold w-8 h-8 rounded-full flex items-center justify-center shadow-lg">
                         {quantityInCart}
                     </div>
                 )}
@@ -116,12 +116,12 @@ const ProductCard = ({ product }) => {
 
             <div className="flex justify-between items-start">
                 <div>
-                    <h3 className="text-xl font-serif text-white group-hover:text-[#38bdf8] transition-colors">{product.name}</h3>
-                    <p className="text-sm text-white/40">{product.category}</p>
+                    <h3 className="text-xl font-serif text-secondary group-hover:text-accent transition-colors">{product.name}</h3>
+                    <p className="text-sm text-muted">{product.category}</p>
                 </div>
                 <div className="text-right">
-                    <span className="block text-lg font-medium text-[#38bdf8]">₹{product.price}</span>
-                    <span className={`text-xs ${product.stock < 10 ? 'text-orange-400' : 'text-green-400'}`}>
+                    <span className="block text-lg font-medium text-accent">₹{product.price}</span>
+                    <span className={`text-sm font-bold ${product.stock < 10 ? 'text-orange-500 dark:text-orange-400' : 'text-green-600 dark:text-green-400'}`}>
                         {product.stock} left in stock
                     </span>
                 </div>
@@ -134,7 +134,7 @@ const ProductCard = ({ product }) => {
                         href={product.externalLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full py-3 border border-white/10 bg-white/5 text-white/80 hover:bg-[#38bdf8] hover:text-primary hover:border-[#38bdf8] flex items-center justify-center gap-2 uppercase text-xs tracking-widest font-bold transition-colors duration-300"
+                        className="w-full py-3 border border-border bg-surface text-secondary hover:bg-accent hover:text-primary hover:border-accent flex items-center justify-center gap-2 uppercase text-xs tracking-widest font-bold transition-colors duration-300"
                     >
                         <Info className="w-4 h-4" /> View Details
                     </a>
@@ -147,18 +147,18 @@ const ProductCard = ({ product }) => {
                             value={inputValue}
                             onChange={handleInputChange}
                             onBlur={handleInputBlur}
-                            className="w-20 bg-white/5 border border-white/10 text-center text-white p-3 rounded-sm focus:border-[#38bdf8] focus:outline-none"
+                            className="w-20 bg-primary border border-border text-center text-secondary p-3 rounded-sm focus:border-accent focus:outline-none"
                         />
 
                         {quantityInCart === 0 ? (
                             <button
                                 onClick={handleAction}
-                                className="flex-1 py-3 border border-white/10 bg-white/5 text-white/80 hover:bg-[#38bdf8] hover:text-primary hover:border-[#38bdf8] flex items-center justify-center gap-2 uppercase text-xs tracking-widest font-bold transition-colors duration-300"
+                                className="flex-1 py-3 border border-border bg-surface text-secondary hover:bg-accent hover:text-primary hover:border-accent flex items-center justify-center gap-2 uppercase text-xs tracking-widest font-bold transition-colors duration-300"
                             >
                                 <ShoppingBag className="w-4 h-4" /> Add to Cart
                             </button>
                         ) : (
-                            <div className="flex-1 flex items-center justify-center gap-2 text-green-400 text-xs font-bold uppercase tracking-widest border border-white/10 bg-white/5 rounded-sm">
+                            <div className="flex-1 flex items-center justify-center gap-2 text-green-400 text-xs font-bold uppercase tracking-widest border border-border bg-surface rounded-sm">
                                 <span className="animate-pulse">In Cart</span>
                             </div>
                         )}
@@ -179,7 +179,7 @@ const ProductCard = ({ product }) => {
             {isOutOfStock && (
                 <button
                     disabled
-                    className="w-full py-3 border border-white/5 bg-transparent text-white/20 cursor-not-allowed uppercase text-xs tracking-widest font-bold flex items-center justify-center gap-2"
+                    className="w-full py-3 border border-border bg-transparent text-muted cursor-not-allowed uppercase text-xs tracking-widest font-bold flex items-center justify-center gap-2"
                 >
                     <ShoppingBag className="w-4 h-4" /> Out of Stock
                 </button>

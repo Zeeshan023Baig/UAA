@@ -1,10 +1,11 @@
 import { useCart } from '../context/CartContext';
 import { useProducts } from '../context/ProductContext';
 import { Trash2, Plus, Minus, ArrowRight, Loader } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 const Cart = () => {
+    const navigate = useNavigate();
     const { cartItems, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
     const { purchaseItems } = useProducts();
     const [customer, setCustomer] = useState({ name: '', email: '', phone: '' });
@@ -60,6 +61,35 @@ const Cart = () => {
                         <p>Phone: {lastOrder.customer.phone}</p>
                     </div>
 
+                    <div className="bg-accent/10 border border-accent/20 p-4 rounded-sm">
+                        <p className="text-accent text-xs font-bold uppercase tracking-widest mb-2">Share with Boss / Manager</p>
+                        <p className="text-white/60 text-xs mb-3">Send this link to allow them to edit the order:</p>
+
+                        <div className="flex gap-2">
+                            <input
+                                readOnly
+                                value={`${window.location.origin}/order/${lastOrder.id}/edit`}
+                                className="bg-black/40 border border-white/10 text-white/80 text-xs p-2 rounded-sm flex-grow outline-none select-all"
+                            />
+                            <button
+                                onClick={() => {
+                                    navigator.clipboard.writeText(`${window.location.origin}/order/${lastOrder.id}/edit`);
+                                    alert("Link copied to clipboard!");
+                                }}
+                                className="bg-white/10 hover:bg-white/20 text-white px-3 rounded-sm transition-colors text-xs font-bold"
+                            >
+                                Copy
+                            </button>
+                        </div>
+
+                        <a
+                            href={`mailto:?subject=Order Receipt #${lastOrder.id}&body=Here is the receipt for Order #${lastOrder.id}.%0D%0A%0D%0AYou can view and edit the order here:%0D%0A${window.location.origin}/order/${lastOrder.id}/edit`}
+                            className="block text-center mt-3 text-accent hover:text-white text-xs font-bold uppercase tracking-widest transition-colors"
+                        >
+                            Send via Email
+                        </a>
+                    </div>
+
                     <div className="space-y-4 max-h-[40vh] overflow-y-auto pr-2">
                         {lastOrder.items.map(item => (
                             <div key={item.id} className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
@@ -78,7 +108,10 @@ const Cart = () => {
                     </div>
 
                     <button
-                        onClick={() => setLastOrder(null)}
+                        onClick={() => {
+                            setLastOrder(null);
+                            navigate('/catalogue');
+                        }}
                         className="w-full py-3 bg-white/10 hover:bg-white/20 text-white font-bold uppercase tracking-wider transition-colors"
                     >
                         Close Receipt
@@ -116,18 +149,18 @@ const Cart = () => {
                                         <h3 className="font-serif text-lg">{item.name}</h3>
                                         <p className="text-sm text-white/40">{item.specs}</p>
                                     </div>
-                                    <button onClick={() => removeFromCart(item.id)} className="text-white/20 hover:text-red-400 transition-colors">
+                                    <button onClick={() => removeFromCart(item.id)} className="text-muted hover:text-red-500 transition-colors">
                                         <Trash2 className="w-5 h-5" />
                                     </button>
                                 </div>
 
                                 <div className="flex justify-between items-end">
-                                    <div className="flex items-center gap-3 border border-white/10 rounded-sm px-2 py-1">
-                                        <button onClick={() => updateQuantity(item.id, -1)} className="hover:text-[#38bdf8]"><Minus className="w-3 h-3" /></button>
+                                    <div className="flex items-center gap-3 border border-border rounded-sm px-2 py-1">
+                                        <button onClick={() => updateQuantity(item.id, -1)} className="hover:text-accent"><Minus className="w-3 h-3" /></button>
                                         <span className="text-sm w-4 text-center">{item.quantity}</span>
-                                        <button onClick={() => updateQuantity(item.id, 1)} className="hover:text-[#38bdf8]"><Plus className="w-3 h-3" /></button>
+                                        <button onClick={() => updateQuantity(item.id, 1)} className="hover:text-accent"><Plus className="w-3 h-3" /></button>
                                     </div>
-                                    <span className="font-bold text-[#38bdf8]">₹{item.price * item.quantity}</span>
+                                    <span className="font-bold text-accent">₹{item.price * item.quantity}</span>
                                 </div>
                             </div>
                         </div>
@@ -136,15 +169,15 @@ const Cart = () => {
 
                 {/* Order Summary Form */}
                 <div className="lg:col-span-1">
-                    <form onSubmit={handleCheckout} className="p-6 border border-white/10 bg-white/5 space-y-6 sticky top-24">
-                        <h3 className="text-xl font-serif">Checkout Details</h3>
+                    <form onSubmit={handleCheckout} className="p-6 border border-border bg-surface space-y-6 sticky top-24">
+                        <h3 className="text-xl font-serif text-secondary">Checkout Details</h3>
 
                         <div className="space-y-4">
                             <input
                                 type="text"
                                 placeholder="Full Name"
                                 required
-                                className="w-full bg-black/20 border border-white/10 p-3 text-sm text-white rounded-sm focus:border-[#38bdf8] outline-none transition-colors"
+                                className="w-full bg-white dark:bg-black/20 border border-border p-3 text-sm text-slate-900 dark:text-white rounded-sm focus:border-accent outline-none transition-colors placeholder:text-muted"
                                 value={customer.name}
                                 onChange={e => setCustomer({ ...customer, name: e.target.value })}
                             />
@@ -152,12 +185,12 @@ const Cart = () => {
                                 type="email"
                                 placeholder="Email Address"
                                 required
-                                className="w-full bg-black/20 border border-white/10 p-3 text-sm text-white rounded-sm focus:border-[#38bdf8] outline-none transition-colors"
+                                className="w-full bg-white dark:bg-black/20 border border-border p-3 text-sm text-slate-900 dark:text-white rounded-sm focus:border-accent outline-none transition-colors placeholder:text-muted"
                                 value={customer.email}
                                 onChange={e => setCustomer({ ...customer, email: e.target.value })}
                             />
                             <div className="relative">
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-sm select-none border-r border-white/10 pr-2">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted text-sm select-none border-r border-border pr-2">
                                     +91
                                 </span>
                                 <input
@@ -167,7 +200,7 @@ const Cart = () => {
                                     maxLength="10"
                                     pattern="[0-9]{10}"
                                     title="Please enter a valid 10-digit phone number"
-                                    className={`w-full bg-black/20 border p-3 pl-16 text-sm text-white rounded-sm outline-none transition-colors ${phoneError ? 'border-red-500 mb-0' : 'border-white/10 focus:border-[#38bdf8]'}`}
+                                    className={`w-full bg-white dark:bg-black/20 border p-3 pl-16 text-sm text-slate-900 dark:text-white rounded-sm outline-none transition-colors placeholder:text-muted ${phoneError ? 'border-red-500 mb-0' : 'border-border focus:border-accent'}`}
                                     value={customer.phone}
                                     onChange={e => {
                                         const raw = e.target.value;
@@ -193,7 +226,7 @@ const Cart = () => {
                             )}
                         </div>
 
-                        <div className="space-y-2 text-sm text-white/60 pt-4 border-t border-white/10">
+                        <div className="space-y-2 text-sm text-muted pt-4 border-t border-border">
                             <div className="flex justify-between">
                                 <span>Subtotal</span>
                                 <span>₹{cartTotal}</span>
@@ -203,15 +236,15 @@ const Cart = () => {
                                 <span>Free</span>
                             </div>
                         </div>
-                        <div className="border-t border-white/10 pt-4 flex justify-between font-bold text-lg">
+                        <div className="border-t border-border pt-4 flex justify-between font-bold text-lg text-secondary">
                             <span>Total</span>
-                            <span className="text-[#38bdf8]">₹{cartTotal}</span>
+                            <span className="text-accent">₹{cartTotal}</span>
                         </div>
 
                         <button
                             type="submit"
                             disabled={isCheckingOut}
-                            className="w-full py-3 bg-[#38bdf8] text-primary font-bold uppercase tracking-wider hover:bg-white transition-colors duration-300 flex justify-center items-center gap-2"
+                            className="w-full py-3 bg-accent text-primary font-bold uppercase tracking-wider hover:bg-opacity-90 transition-colors duration-300 flex justify-center items-center gap-2"
                         >
                             {isCheckingOut && <Loader className="w-4 h-4 animate-spin" />}
                             {isCheckingOut ? 'Processing...' : 'Complete Order'}

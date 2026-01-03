@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Catalogue from './pages/Catalogue';
 import Cart from './pages/Cart';
 import Admin from './pages/Admin';
+import UpdateOrder from './pages/UpdateOrder';
 import Login from './components/Login';
 import { ProductProvider } from './context/ProductContext';
 
@@ -20,6 +21,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="catalogue" element={<Catalogue />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="order/:orderId/edit" element={<UpdateOrder />} />
           <Route
             path="admin"
             element={
