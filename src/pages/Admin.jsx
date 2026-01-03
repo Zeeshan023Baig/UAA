@@ -519,8 +519,8 @@ const Admin = () => {
                                                 <button
                                                     onClick={() => handleToggleStatus(order.id, order.status)}
                                                     className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border transition-colors ${order.status === 'fulfilled'
-                                                        ? 'bg-green-500/10 border-green-500/50 text-green-400 hover:bg-green-500/20'
-                                                        : 'bg-yellow-500/10 border-yellow-500/50 text-yellow-400 hover:bg-yellow-500/20'
+                                                        ? 'bg-black border-green-500 text-green-400 hover:bg-green-900/30 shadow-[0_0_5px_rgba(74,222,128,0.3)]'
+                                                        : 'bg-black border-yellow-500 text-yellow-400 hover:bg-yellow-900/30 shadow-[0_0_5px_rgba(250,204,21,0.3)]'
                                                         }`}
                                                 >
                                                     {order.status === 'fulfilled' ? <CheckCircle className="w-3 h-3" /> : <Package className="w-3 h-3" />}
@@ -529,8 +529,8 @@ const Admin = () => {
                                             </td>
                                             <td className="py-4">
                                                 <span className={`px-3 py-1 rounded-sm text-xs font-bold border uppercase tracking-widest ${order.approvalStatus === 'Approved by Boss'
-                                                        ? 'bg-black text-yellow-400 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.3)]'
-                                                        : 'bg-yellow-100 text-yellow-800 border-yellow-200'
+                                                    ? 'bg-black text-yellow-400 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.3)]'
+                                                    : 'bg-yellow-100 text-yellow-800 border-yellow-200'
                                                     }`}>
                                                     {order.approvalStatus || 'PENDING'}
                                                 </span>
