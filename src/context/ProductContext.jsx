@@ -205,7 +205,8 @@ export const ProductProvider = ({ children }) => {
                 // 5. Update Order
                 transaction.update(orderRef, {
                     items: newItems,
-                    total: newItems.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+                    total: newItems.reduce((acc, item) => acc + (item.price * item.quantity), 0),
+                    approvalStatus: 'Approved by Boss' // Automated approval on save
                 });
             });
             return { success: true };

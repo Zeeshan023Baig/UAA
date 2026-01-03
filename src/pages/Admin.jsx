@@ -305,7 +305,7 @@ const Admin = () => {
 
     const handleExportSingleOrder = (order) => {
         // Define CSV headers
-        const headers = ["Date", "Time", "Order ID", "Customer Name", "Phone", "Email", "Item Name", "Quantity", "Unit Price", "Order Total", "Status"];
+        const headers = ["Date", "Time", "Order ID", "Customer Name", "Phone", "Email", "Item Name", "Quantity", "Unit Price", "Order Total", "Status", "Approval"];
 
         const date = new Date(order.date).toLocaleDateString();
         const time = new Date(order.date).toLocaleTimeString();
@@ -324,7 +324,8 @@ const Admin = () => {
             escape(item.quantity),
             escape(item.price || 0),
             escape(order.total),
-            escape(order.status)
+            escape(order.status),
+            escape(order.approvalStatus || 'Pending')
         ].join(","));
 
         // Combine headers and rows
@@ -490,6 +491,7 @@ const Admin = () => {
                                         <th className="pb-4">Customer</th>
                                         <th className="pb-4">Items</th>
                                         <th className="pb-4">Status</th>
+                                        <th className="pb-4">Approval</th>
                                         <th className="pb-4 text-right">Total</th>
                                         <th className="pb-4 text-center">Export</th>
                                     </tr>
@@ -524,6 +526,14 @@ const Admin = () => {
                                                     {order.status === 'fulfilled' ? <CheckCircle className="w-3 h-3" /> : <Package className="w-3 h-3" />}
                                                     {order.status === 'fulfilled' ? 'Fulfilled' : 'Pending'}
                                                 </button>
+                                            </td>
+                                            <td className="py-4">
+                                                <span className={`px-3 py-1 rounded-sm text-xs font-bold border uppercase tracking-widest ${order.approvalStatus === 'Approved by Boss'
+                                                        ? 'bg-black text-yellow-400 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.3)]'
+                                                        : 'bg-yellow-100 text-yellow-800 border-yellow-200'
+                                                    }`}>
+                                                    {order.approvalStatus || 'PENDING'}
+                                                </span>
                                             </td>
                                             <td className={`py-4 text-right font-bold ${order.status === 'fulfilled' ? 'text-muted line-through decoration-muted' : 'text-accent'}`}>
                                                 ₹{order.total}
