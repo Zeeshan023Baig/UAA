@@ -4,14 +4,43 @@ import { Trash2, Plus, Minus, ArrowRight, Loader } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
+import emailjs from '@emailjs/browser';
+
 const Cart = () => {
     const navigate = useNavigate();
     const { cartItems, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
     const { purchaseItems } = useProducts();
-    const [customer, setCustomer] = useState({ name: '', email: '', phone: '' });
+    const [customer, setCustomer] = useState({ name: '', email: '', phone: '', branch: '' });
     const [phoneError, setPhoneError] = useState('');
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [lastOrder, setLastOrder] = useState(null);
+    const [sendingEmail, setSendingEmail] = useState(false);
+
+    const handleSendEmail = async () => {
+        setSendingEmail(true);
+        try {
+            // !IMPORTANT: You must replace these placeholders with your actual EmailJS credentials
+            // Sign up at https://www.emailjs.com/
+            const SERVICE_ID = "service_siw244i"; // Updated from screenshot
+            const TEMPLATE_ID = "template_6984agq"; // Updated from user
+            const PUBLIC_KEY = "YpglawHtCtJ1-mbWw"; // Updated from screenshot
+
+            await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+                to_email: lastOrder.customer.email,
+                to_name: lastOrder.customer.name,
+                order_id: lastOrder.id,
+                order_link: `${window.location.origin}/order/${lastOrder.id}/edit`,
+                total: lastOrder.total,
+                branch: lastOrder.customer.branch
+            }, PUBLIC_KEY);
+            alert("Email sent successfully!");
+        } catch (error) {
+            console.error("Email failed:", error);
+            alert("Failed to send email. Please check internet connection.");
+        } finally {
+            setSendingEmail(false);
+        }
+    };
 
     const handleCheckout = async (e) => {
         e.preventDefault();
@@ -82,12 +111,13 @@ const Cart = () => {
                             </button>
                         </div>
 
-                        <a
-                            href={`mailto:?subject=Order Receipt #${lastOrder.id}&body=Here is the receipt for Order #${lastOrder.id}.%0D%0A%0D%0AYou can view and edit the order here:%0D%0A${window.location.origin}/order/${lastOrder.id}/edit`}
-                            className="block text-center mt-3 text-accent hover:text-white text-xs font-bold uppercase tracking-widest transition-colors"
+                        <button
+                            onClick={handleSendEmail}
+                            disabled={sendingEmail}
+                            className="w-full mt-3 flex justify-center items-center gap-2 text-accent hover:text-white text-xs font-bold uppercase tracking-widest transition-colors py-2 border border-accent/30 hover:bg-accent/10 rounded-sm"
                         >
-                            Send via Email
-                        </a>
+                            {sendingEmail ? <Loader className="w-3 h-3 animate-spin" /> : 'Send via Email'}
+                        </button>
                     </div>
 
                     <div className="space-y-4 max-h-[40vh] overflow-y-auto pr-2">
@@ -224,6 +254,25 @@ const Cart = () => {
                                     {phoneError}
                                 </p>
                             )}
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    placeholder="Branch / Location"
+                                    required
+                                    className="w-full bg-white dark:bg-black/20 border border-border p-3 text-sm text-slate-900 dark:text-white rounded-sm focus:border-accent outline-none transition-colors placeholder:text-muted"
+                                    value={customer.branch || ''}
+                                    onChange={e => setCustomer({ ...customer, branch: e.target.value })}
+                                />
+                                <a
+                                    href="https://www.google.com/maps"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-accent/10 hover:bg-accent/20 border border-accent/30 text-accent px-3 rounded-sm flex items-center justify-center transition-colors"
+                                    title="Open Google Maps to find location"
+                                >
+                                    🌍
+                                </a>
+                            </div>
                         </div>
 
                         <div className="space-y-2 text-sm text-muted pt-4 border-t border-border">
