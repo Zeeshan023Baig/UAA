@@ -48,6 +48,44 @@ const Cart = () => {
         }
     };
 
+    const validateEmail = (email) => {
+        // 1. Basic Syntax Check (Before @)
+        const basicRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!basicRegex.test(email)) {
+            return { valid: false, error: "Invalid email format. Check for spaces or missing characters." };
+        }
+
+        if (email.includes('..') || email.startsWith('.') || email.endsWith('.')) {
+            return { valid: false, error: "Email cannot contain double dots or start/end with a dot." };
+        }
+
+        // 2. Common Domain Typo Check (After @)
+        const parts = email.split('@');
+        if (parts.length !== 2) return { valid: false, error: "Invalid email format." };
+
+        const domain = parts[1].toLowerCase();
+        const typoDomains = {
+            'gmil.com': 'gmail.com',
+            'gmial.com': 'gmail.com',
+            'gnail.com': 'gmail.com',
+            'gmai.com': 'gmail.com',
+            'yaho.com': 'yahoo.com',
+            'yahooo.com': 'yahoo.com',
+            'hotmal.com': 'hotmail.com',
+            'outlok.com': 'outlook.com'
+        };
+
+        if (typoDomains[domain]) {
+            const correctDomain = typoDomains[domain];
+            const useCorrect = window.confirm(`Did you mean @${correctDomain} instead of @${domain}? \n\nClick OK to fix it automatically.`);
+            if (useCorrect) {
+                return { valid: true, fixedEmail: email.replace(domain, correctDomain) };
+            }
+        }
+
+        return { valid: true };
+    };
+
     const handleCheckout = async (e) => {
         e.preventDefault();
         if (cartItems.length === 0) return;
