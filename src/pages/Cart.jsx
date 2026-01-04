@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import ProductCard from '../components/ProductCard';
 
+import { db } from '../lib/firebase';
+import { doc, deleteDoc } from 'firebase/firestore';
 import emailjs from '@emailjs/browser';
 
 const Cart = () => {
@@ -120,12 +122,44 @@ const Cart = () => {
 
         const result = await purchaseItems(currentCart, finalCustomer); // Use finalCustomer
 
-        setIsCheckingOut(false);
         if (result.success) {
-            setLastOrder({ items: currentCart, total: currentTotal, id: result.orderId, customer: finalCustomer });
-            clearCart();
-            setCustomer({ name: '', email: '', phone: '' });
+            // STRICT BOOKING: Try to send email immediately
+            try {
+                // !IMPORTANT: Replace with your actual EmailJS credentials if changed
+                const SERVICE_ID = "service_siw244i";
+                const TEMPLATE_ID = "template_6984agq";
+                const PUBLIC_KEY = "YpgIawHtCtJ1-mbWw";
+
+                await emailjs.send(
+                    SERVICE_ID.trim(),
+                    TEMPLATE_ID.trim(),
+                    {
+                        to_email: finalCustomer.email,
+                        to_name: finalCustomer.name,
+                        order_id: result.orderId,
+                        order_link: `${window.location.origin}/order/${result.orderId}/edit`,
+                        total: currentTotal,
+                        branch: finalCustomer.branch || 'N/A'
+                    },
+                    PUBLIC_KEY.trim()
+                );
+
+                // Email Success: Commit Order
+                setIsCheckingOut(false);
+                setLastOrder({ items: currentCart, total: currentTotal, id: result.orderId, customer: finalCustomer });
+                clearCart();
+                setCustomer({ name: '', email: '', phone: '' });
+
+            } catch (emailError) {
+                // Email Failed: Rollback Order (Delete from DB)
+                console.error("Email verification failed:", emailError);
+                await deleteDoc(doc(db, "orders", result.orderId));
+
+                setIsCheckingOut(false);
+                alert(`Booking Failed: We could not verify your email address (${finalCustomer.email}). \n\nPlease check your email and try again. The order has NOT been placed.`);
+            }
         } else {
+            setIsCheckingOut(false);
             alert(`Purchase failed: ${result.error}`);
         }
     };

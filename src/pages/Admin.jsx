@@ -64,6 +64,11 @@ const Admin = () => {
     const [orders, setOrders] = useState([]);
     const [loadingOrders, setLoadingOrders] = useState(true);
 
+    // Pagination State
+    const ITEMS_PER_PAGE = 12;
+    const [inventoryPage, setInventoryPage] = useState(1);
+    const [ordersPage, setOrdersPage] = useState(1);
+
     // Edit Mode State
     const [editingProduct, setEditingProduct] = useState(null);
 
@@ -441,7 +446,7 @@ const Admin = () => {
 
                     {/* Product List */}
                     <div className="lg:col-span-2 space-y-4">
-                        {products.map(product => (
+                        {products.slice((inventoryPage - 1) * ITEMS_PER_PAGE, inventoryPage * ITEMS_PER_PAGE).map(product => (
                             <div key={product.id} className="flex items-center gap-4 bg-surface p-4 border border-border rounded-sm">
                                 <img src={product.image} className="w-16 h-16 object-cover rounded-sm" alt={product.name} />
                                 <div className="flex-grow">
@@ -465,6 +470,29 @@ const Admin = () => {
                                 </div>
                             </div>
                         ))}
+
+                        {/* Inventory Pagination Controls */}
+                        {products.length > ITEMS_PER_PAGE && (
+                            <div className="flex justify-center gap-2 mt-6">
+                                <button
+                                    onClick={() => setInventoryPage(p => Math.max(1, p - 1))}
+                                    disabled={inventoryPage === 1}
+                                    className="px-3 py-1 bg-surface border border-border text-secondary disabled:opacity-50 rounded-sm hover:bg-accent hover:text-primary transition-colors text-sm"
+                                >
+                                    Previous
+                                </button>
+                                <span className="px-3 py-1 text-secondary text-sm flex items-center">
+                                    Page {inventoryPage} of {Math.ceil(products.length / ITEMS_PER_PAGE)}
+                                </span>
+                                <button
+                                    onClick={() => setInventoryPage(p => Math.min(Math.ceil(products.length / ITEMS_PER_PAGE), p + 1))}
+                                    disabled={inventoryPage === Math.ceil(products.length / ITEMS_PER_PAGE)}
+                                    className="px-3 py-1 bg-surface border border-border text-secondary disabled:opacity-50 rounded-sm hover:bg-accent hover:text-primary transition-colors text-sm"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             ) : (
@@ -497,7 +525,7 @@ const Admin = () => {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-border">
-                                    {orders.map(order => (
+                                    {orders.slice((ordersPage - 1) * ITEMS_PER_PAGE, ordersPage * ITEMS_PER_PAGE).map(order => (
                                         <tr key={order.id} className="hover:bg-surface transition-colors">
                                             <td className="py-4">
                                                 {new Date(order.date).toLocaleDateString()} <br />
@@ -551,6 +579,29 @@ const Admin = () => {
                                     ))}
                                 </tbody>
                             </table>
+
+                            {/* Orders Pagination Controls */}
+                            {orders.length > ITEMS_PER_PAGE && (
+                                <div className="flex justify-center gap-2 mt-6 pb-6">
+                                    <button
+                                        onClick={() => setOrdersPage(p => Math.max(1, p - 1))}
+                                        disabled={ordersPage === 1}
+                                        className="px-3 py-1 bg-surface border border-border text-secondary disabled:opacity-50 rounded-sm hover:bg-accent hover:text-primary transition-colors text-sm"
+                                    >
+                                        Previous
+                                    </button>
+                                    <span className="px-3 py-1 text-secondary text-sm flex items-center">
+                                        Page {ordersPage} of {Math.ceil(orders.length / ITEMS_PER_PAGE)}
+                                    </span>
+                                    <button
+                                        onClick={() => setOrdersPage(p => Math.min(Math.ceil(orders.length / ITEMS_PER_PAGE), p + 1))}
+                                        disabled={ordersPage === Math.ceil(orders.length / ITEMS_PER_PAGE)}
+                                        className="px-3 py-1 bg-surface border border-border text-secondary disabled:opacity-50 rounded-sm hover:bg-accent hover:text-primary transition-colors text-sm"
+                                    >
+                                        Next
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
