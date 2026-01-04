@@ -1,6 +1,6 @@
 import { useCart } from '../context/CartContext';
 import { useProducts } from '../context/ProductContext';
-import { Trash2, Plus, Minus, ArrowRight, Loader, ShoppingBag } from 'lucide-react';
+import { Trash2, Plus, Minus, ArrowRight, Loader, ShoppingBag, MapPin } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import ProductCard from '../components/ProductCard';
@@ -13,11 +13,16 @@ const Cart = () => {
     const navigate = useNavigate();
     const { cartItems, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
     const { purchaseItems } = useProducts();
-    const [customer, setCustomer] = useState({ name: '', email: '', phone: '', branch: '' });
+    // User updated Name and StoreName keys
+    const [customer, setCustomer] = useState({ Name: '', email: '', phone: '', StoreName: '', branch: '' });
     const [phoneError, setPhoneError] = useState('');
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [lastOrder, setLastOrder] = useState(null);
     const [sendingEmail, setSendingEmail] = useState(false);
+
+    // Location Search State
+    const [suggestions, setSuggestions] = useState([]);
+    const [showSuggestions, setShowSuggestions] = useState(false);
 
     const handleSendEmail = async () => {
         setSendingEmail(true);
@@ -34,6 +39,7 @@ const Cart = () => {
                 {
                     to_email: lastOrder.customer.email,
                     to_name: lastOrder.customer.name,
+                    StoreName: lastOrder.customer.StoreName,
                     order_id: lastOrder.id,
                     order_link: `${window.location.origin}/order/${lastOrder.id}/edit`,
                     total: lastOrder.total,
@@ -95,7 +101,7 @@ const Cart = () => {
             alert("Cart is empty!");
             return;
         }
-        if (!customer.name || !customer.email || !customer.phone) {
+        if (!customer.Name || !customer.email || !customer.phone) {
             alert("Please fill in all your details to proceed.");
             return;
         }
@@ -135,7 +141,7 @@ const Cart = () => {
                     TEMPLATE_ID.trim(),
                     {
                         to_email: finalCustomer.email,
-                        to_name: finalCustomer.name,
+                        to_name: finalCustomer.Name,
                         order_id: result.orderId,
                         order_link: `${window.location.origin}/order/${result.orderId}/edit`,
                         total: currentTotal,
@@ -179,9 +185,11 @@ const Cart = () => {
 
                     <div className="bg-primary/50 p-4 rounded-sm space-y-2 text-sm text-muted border border-border">
                         <h4 className="text-secondary font-bold mb-2">Customer Details</h4>
-                        <p>Name: {lastOrder.customer.name}</p>
+                        <p>Name: {lastOrder.customer.Name}</p>
+                        <p>Store: {lastOrder.customer.StoreName || 'N/A'}</p>
                         <p>Email: {lastOrder.customer.email}</p>
                         <p>Phone: {lastOrder.customer.phone}</p>
+                        <p className="truncate">Loc: {lastOrder.customer.branch}</p>
                     </div>
 
                     {/* Highlighting this section with a Dark Box as requested */}
@@ -328,8 +336,8 @@ const Cart = () => {
                                 placeholder="Full Name"
                                 required
                                 className="w-full bg-white dark:bg-black/20 border border-border p-3 text-sm text-slate-900 dark:text-white rounded-sm focus:border-accent outline-none transition-colors placeholder:text-muted"
-                                value={customer.name}
-                                onChange={e => setCustomer({ ...customer, name: e.target.value })}
+                                value={customer.Name}
+                                onChange={e => setCustomer({ ...customer, Name: e.target.value })}
                             />
                             <input
                                 type="email"
@@ -375,25 +383,74 @@ const Cart = () => {
                                 </p>
                             )}
                             <div className="flex gap-2">
-                                <input
-                                    type="text"
-                                    placeholder="Branch / Location"
-                                    required
-                                    className="w-full bg-white dark:bg-black/20 border border-border p-3 text-sm text-slate-900 dark:text-white rounded-sm focus:border-accent outline-none transition-colors placeholder:text-muted"
-                                    value={customer.branch || ''}
-                                    onChange={e => setCustomer({ ...customer, branch: e.target.value })}
-                                />
+                                <div className="relative w-full">
+                                    <input
+                                        type="text"
+                                        placeholder="Branch / Location (Auto-search)"
+                                        required
+                                        className="w-full bg-white dark:bg-black/20 border border-border p-3 text-sm text-slate-900 dark:text-white rounded-sm focus:border-accent outline-none transition-colors placeholder:text-muted"
+                                        value={customer.branch || ''}
+                                        onChange={async (e) => {
+                                            const val = e.target.value;
+                                            setCustomer({ ...customer, branch: val });
+
+                                            // Simple debounce-like behavior
+                                            if (val.length > 2) {
+                                                try {
+                                                    const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(val)}&limit=5`);
+                                                    const data = await res.json();
+                                                    setSuggestions(data);
+                                                    setShowSuggestions(true);
+                                                } catch (err) {
+                                                    console.error("Location search failed", err);
+                                                }
+                                            } else {
+                                                setSuggestions([]);
+                                                setShowSuggestions(false);
+                                            }
+                                        }}
+                                        onFocus={() => customer.branch?.length > 2 && setShowSuggestions(true)}
+                                    />
+                                    {/* Suggestions Dropdown */}
+                                    {showSuggestions && suggestions.length > 0 && (
+                                        <div className="absolute z-50 left-0 right-0 top-full mt-1 bg-surface border border-border shadow-xl rounded-sm max-h-60 overflow-y-auto">
+                                            {suggestions.map((place, idx) => (
+                                                <button
+                                                    key={idx}
+                                                    type="button"
+                                                    className="w-full text-left p-3 hover:bg-black/10 dark:hover:bg-white/10 text-xs text-secondary border-b border-border/50 last:border-0 flex items-start gap-2"
+                                                    onClick={() => {
+                                                        setCustomer({ ...customer, branch: place.display_name });
+                                                        setShowSuggestions(false);
+                                                    }}
+                                                >
+                                                    <MapPin className="w-3 h-3 mt-0.5 text-accent flex-shrink-0" />
+                                                    <span>{place.display_name}</span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
                                 <a
                                     href="https://www.google.com/maps"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="bg-accent/10 hover:bg-accent/20 border border-accent/30 text-accent px-3 rounded-sm flex items-center justify-center transition-colors"
-                                    title="Open Google Maps to find location"
+                                    title="Open Google Maps manually"
                                 >
                                     🌍
                                 </a>
                             </div>
                         </div>
+
+                        {/* Store Name Input (New Field) */}
+                        <input
+                            type="text"
+                            placeholder="Store Name (Optional)"
+                            className="w-full bg-white dark:bg-black/20 border border-border p-3 text-sm text-slate-900 dark:text-white rounded-sm focus:border-accent outline-none transition-colors placeholder:text-muted"
+                            value={customer.StoreName || ''}
+                            onChange={e => setCustomer({ ...customer, StoreName: e.target.value })}
+                        />
 
                         <div className="space-y-2 text-sm text-muted pt-4 border-t border-border">
                             <div className="flex justify-between">
