@@ -152,8 +152,8 @@ const Cart = () => {
 
                     {/* Highlighting this section with a Dark Box as requested */}
                     <div className="bg-slate-900 p-6 rounded-sm shadow-inner border border-slate-700">
-                        <p className="text-yellow-400 text-xs font-bold uppercase tracking-widest mb-2">Share with Boss / Manager</p>
-                        <p className="text-slate-300 text-xs mb-3">Send this link to allow them to edit the order:</p>
+                        <p className="text-white text-xs font-bold uppercase tracking-widest mb-2">Share with Boss / Manager</p>
+                        <p className="text-white text-xs mb-3">Send this link to allow them to edit the order:</p>
 
                         <div className="flex gap-2">
                             <input
