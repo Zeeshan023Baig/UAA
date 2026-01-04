@@ -134,18 +134,17 @@ const Cart = () => {
         return (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
                 {/* FORCE bg-white in light mode to ensure it's not transparent/grey. Dark mode uses bg-surface (dark). */}
-                <div className="bg-white dark:bg-surface border border-border p-8 max-w-md w-full space-y-6 relative shadow-2xl">
+                <div className="bg-surface border border-border p-8 max-w-md w-full space-y-6 relative shadow-2xl">
                     <div className="text-center space-y-2">
                         <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
                             <ArrowRight className="w-8 h-8 text-green-500" />
                         </div>
-                        {/* Text colors: dark mode = white, light mode = black (secondary) */}
-                        <h2 className="text-2xl font-serif text-slate-900 dark:text-white">Order Confirmed</h2>
-                        <p className="text-slate-500 dark:text-slate-400 text-sm">Order ID: <span className="font-mono text-accent">#{lastOrder.id.toUpperCase()}</span></p>
+                        <h2 className="text-2xl font-serif text-secondary">Order Confirmed</h2>
+                        <p className="text-muted text-sm">Order ID: <span className="font-mono text-accent">#{lastOrder.id.toUpperCase()}</span></p>
                     </div>
 
-                    <div className="bg-slate-50 dark:bg-white/5 p-4 rounded-sm space-y-2 text-sm text-slate-600 dark:text-slate-300 border border-border">
-                        <h4 className="text-slate-900 dark:text-white font-bold mb-2">Customer Details</h4>
+                    <div className="bg-primary/50 p-4 rounded-sm space-y-2 text-sm text-muted border border-border">
+                        <h4 className="text-secondary font-bold mb-2">Customer Details</h4>
                         <p>Name: {lastOrder.customer.name}</p>
                         <p>Email: {lastOrder.customer.email}</p>
                         <p>Phone: {lastOrder.customer.phone}</p>

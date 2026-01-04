@@ -121,7 +121,7 @@ const ProductCard = ({ product }) => {
                 </div>
                 <div className="text-right">
                     <span className="block text-lg font-medium text-accent">₹{product.price}</span>
-                    <span className={`text-sm font-bold ${product.stock < 10 ? 'text-orange-500 dark:text-orange-400' : 'text-green-600 dark:text-green-400'}`}>
+                    <span className={`text-lg font-extrabold tracking-wide ${product.stock < 10 ? 'text-red-600 dark:text-red-400' : 'text-green-700 dark:text-green-400'}`}>
                         {product.stock} left in stock
                     </span>
                 </div>
