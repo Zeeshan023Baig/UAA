@@ -3,6 +3,7 @@ import { useProducts } from '../context/ProductContext';
 import { ShoppingBag, Info, Loader, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
+import PaginationControls from '../components/PaginationControls';
 
 const Catalogue = () => {
     // Moved cart logic to ProductCard, only need general product data here
@@ -80,29 +81,11 @@ const Catalogue = () => {
             </div>
 
             {/* Pagination Controls */}
-            {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-4 mt-12">
-                    <button
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className="p-2 border border-border rounded-sm hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-secondary"
-                    >
-                        <ChevronLeft className="w-5 h-5" />
-                    </button>
-
-                    <span className="text-sm font-medium text-secondary">
-                        Page {currentPage} of {totalPages}
-                    </span>
-
-                    <button
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                        className="p-2 border border-border rounded-sm hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-secondary"
-                    >
-                        <ChevronRight className="w-5 h-5" />
-                    </button>
-                </div>
-            )}
+            <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+            />
 
             {/* Search Bar */}
             <div className="max-w-md mx-auto relative mt-12 mb-8">
