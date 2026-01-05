@@ -174,7 +174,7 @@ const Cart = () => {
         return (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
                 {/* FORCE bg-white in light mode to ensure it's not transparent/grey. Dark mode uses bg-surface (dark). */}
-                <div className="bg-surface border border-border p-8 max-w-md w-full space-y-6 relative shadow-2xl">
+                <div className="bg-surface border border-border p-6 max-w-md w-full space-y-4 relative shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
                     <div className="text-center space-y-2">
                         <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
                             <ArrowRight className="w-8 h-8 text-green-500" />
@@ -223,7 +223,7 @@ const Cart = () => {
                         </button>
                     </div>
 
-                    <div className="space-y-4 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
+                    <div className="space-y-4 pr-2">
                         {lastOrder.items.map(item => (
                             <div key={item.id} className="flex justify-between items-center text-sm border-b border-border pb-2">
                                 <div>
