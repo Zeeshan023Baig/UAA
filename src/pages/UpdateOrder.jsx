@@ -43,6 +43,21 @@ const UpdateOrder = () => {
         }).filter(item => item.quantity > 0));
     };
 
+    const handleDirectQuantityChange = (id, value) => {
+        const val = parseInt(value);
+        if (isNaN(val)) return;
+
+        setItems(prev => prev.map(item => {
+            if (item.id === id) {
+                // If user types 0, we can keep it as 0 (effectively removing it if saved, or filtering later)
+                // But typically for "editing" an order, 0 might mean delete. 
+                // Let's allow 0 for now so they can type freely.
+                return { ...item, quantity: Math.max(0, val) };
+            }
+            return item;
+        }));
+    };
+
     const handleSave = async () => {
         setIsSaving(true);
         const result = await updateOrderItems(orderId, items);
@@ -96,7 +111,13 @@ const UpdateOrder = () => {
                                     <div className="flex items-center gap-3 mt-2">
                                         <div className="flex items-center gap-3 border border-white/10 rounded-sm px-2 py-1 bg-black/20">
                                             <button onClick={() => handleQuantityChange(item.id, -1)} className="hover:text-accent text-white"><Minus className="w-3 h-3" /></button>
-                                            <span className="text-sm w-8 text-center text-white">{item.quantity}</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                className="w-12 bg-transparent text-center text-white text-sm outline-none appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                                value={item.quantity}
+                                                onChange={(e) => handleDirectQuantityChange(item.id, e.target.value)}
+                                            />
                                             <button onClick={() => handleQuantityChange(item.id, 1)} className="hover:text-accent text-white"><Plus className="w-3 h-3" /></button>
                                         </div>
                                         <button onClick={() => handleQuantityChange(item.id, -item.quantity)} className="text-white/20 hover:text-red-400 transition-colors ml-auto">
