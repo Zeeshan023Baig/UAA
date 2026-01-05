@@ -101,7 +101,7 @@ const Cart = () => {
             alert("Cart is empty!");
             return;
         }
-        if (!customer.Name || !customer.email || !customer.phone) {
+        if (!customer.name || !customer.email || !customer.phone) {
             alert("Please fill in all your details to proceed.");
             return;
         }
