@@ -512,7 +512,7 @@ const Admin = () => {
                                         <th className="pb-4">Date</th>
                                         <th className="pb-4">Customer</th>
                                         <th className="pb-4">Items</th>
-                                        <th className="pb-4">Delivery Approval</th>
+                                        <th className="pb-4">Order Approval</th>
                                         <th className="pb-4">Delivery Status</th>
                                         <th className="pb-4 text-right">Total</th>
                                         <th className="pb-4 text-center">Actions</th>
