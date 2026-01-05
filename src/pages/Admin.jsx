@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useProducts } from '../context/ProductContext';
 import { db } from '../lib/firebase';
-import { collection, query, orderBy, onSnapshot, updateDoc, doc } from 'firebase/firestore';
-import { Package, Plus, Loader, CheckCircle, Download, Edit2, X } from 'lucide-react';
+import { collection, query, orderBy, onSnapshot, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+import { Package, Plus, Loader, CheckCircle, Download, Edit2, X, Trash2 } from 'lucide-react';
 
 const StockInput = ({ initialStock, onUpdate }) => {
     // ... (StockInput code remains same)
@@ -259,6 +259,16 @@ const Admin = () => {
             });
         } catch (error) {
             alert('Error updating order status: ' + error.message);
+        }
+    };
+
+    const handleDeleteOrder = async (orderId) => {
+        if (window.confirm("Are you sure you want to delete this order PERMANENTLY? This cannot be undone.")) {
+            try {
+                await deleteDoc(doc(db, "orders", orderId));
+            } catch (error) {
+                alert("Error deleting order: " + error.message);
+            }
         }
     };
 
@@ -521,7 +531,7 @@ const Admin = () => {
                                         <th className="pb-4">Status</th>
                                         <th className="pb-4">Approval</th>
                                         <th className="pb-4 text-right">Total</th>
-                                        <th className="pb-4 text-center">Export</th>
+                                        <th className="pb-4 text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-border">
@@ -557,7 +567,7 @@ const Admin = () => {
                                             </td>
                                             <td className="py-4">
                                                 <span className={`px-3 py-1 rounded-sm text-xs font-bold border uppercase tracking-widest ${order.approvalStatus === 'Approved by Boss'
-                                                    ? 'bg-black text-green-400 border-green-400 shadow-[0_0_10px_rgba(250,204,21,0.3)]'
+                                                    ? 'bg-black text-green-400 border-green-400 shadow-[0_0_10px_rgba(74,222,128,0.3)]'
                                                     : 'bg-green-100 text-green-800 border-green-200'
                                                     }`}>
                                                     {order.approvalStatus || 'PENDING'}
@@ -573,6 +583,13 @@ const Admin = () => {
                                                     title="Export Order to CSV"
                                                 >
                                                     <Download className="w-4 h-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDeleteOrder(order.id)}
+                                                    className="p-2 text-muted hover:text-red-500 hover:bg-surface rounded-full transition-colors"
+                                                    title="Delete Order"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
                                                 </button>
                                             </td>
                                         </tr>
