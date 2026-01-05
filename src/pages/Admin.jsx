@@ -283,7 +283,7 @@ const Admin = () => {
                 escape(date),
                 escape(time),
                 escape(order.id),
-                escape(order.customer?.name || 'Guest'),
+                escape(order.customer?.name),
                 escape(order.customer?.phone),
                 escape(order.customer?.email),
                 escape(item.name),
@@ -322,7 +322,7 @@ const Admin = () => {
             escape(date),
             escape(time),
             escape(order.id),
-            escape(order.customer?.name || 'Guest'),
+            escape(order.customer?.name),
             escape(order.customer?.phone),
             escape(order.customer?.email),
             escape(item.name),
@@ -532,7 +532,7 @@ const Admin = () => {
                                                 <span className="text-xs opacity-50">{new Date(order.date).toLocaleTimeString()}</span>
                                             </td>
                                             <td className="py-4">
-                                                <span className="text-secondary block font-bold">{order.customer?.name || 'Guest'}</span>
+                                                <span className="text-secondary block font-bold">{order.customer?.name}</span>
                                                 <span className="text-xs block">{order.customer?.phone}</span>
                                                 <span className="text-xs block">{order.customer?.email}</span>
                                             </td>
@@ -557,8 +557,8 @@ const Admin = () => {
                                             </td>
                                             <td className="py-4">
                                                 <span className={`px-3 py-1 rounded-sm text-xs font-bold border uppercase tracking-widest ${order.approvalStatus === 'Approved by Boss'
-                                                    ? 'bg-black text-yellow-400 border-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.3)]'
-                                                    : 'bg-yellow-100 text-yellow-800 border-yellow-200'
+                                                    ? 'bg-black text-green-400 border-green-400 shadow-[0_0_10px_rgba(250,204,21,0.3)]'
+                                                    : 'bg-green-100 text-green-800 border-green-200'
                                                     }`}>
                                                     {order.approvalStatus || 'PENDING'}
                                                 </span>

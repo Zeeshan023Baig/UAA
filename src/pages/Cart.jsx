@@ -14,7 +14,7 @@ const Cart = () => {
     const { cartItems, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
     const { purchaseItems } = useProducts();
     // User updated Name and StoreName keys
-    const [customer, setCustomer] = useState({ Name: '', email: '', phone: '', StoreName: '', branch: '' });
+    const [customer, setCustomer] = useState({ name: '', email: '', phone: '', StoreName: '', branch: '' });
     const [phoneError, setPhoneError] = useState('');
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [lastOrder, setLastOrder] = useState(null);
@@ -141,7 +141,7 @@ const Cart = () => {
                     TEMPLATE_ID.trim(),
                     {
                         to_email: finalCustomer.email,
-                        to_name: finalCustomer.Name,
+                        to_name: finalCustomer.name,
                         order_id: result.orderId,
                         order_link: `${window.location.origin}/order/${result.orderId}/edit`,
                         total: currentTotal,
@@ -185,7 +185,7 @@ const Cart = () => {
 
                     <div className="bg-primary/50 p-4 rounded-sm space-y-2 text-sm text-muted border border-border">
                         <h4 className="text-secondary font-bold mb-2">Customer Details</h4>
-                        <p>Name: {lastOrder.customer.Name}</p>
+                        <p>Name: {lastOrder.customer.name}</p>
                         <p>Store: {lastOrder.customer.StoreName || 'N/A'}</p>
                         <p>Email: {lastOrder.customer.email}</p>
                         <p>Phone: {lastOrder.customer.phone}</p>
@@ -336,8 +336,8 @@ const Cart = () => {
                                 placeholder="Full Name"
                                 required
                                 className="w-full bg-white dark:bg-black/20 border border-border p-3 text-sm text-slate-900 dark:text-white rounded-sm focus:border-accent outline-none transition-colors placeholder:text-muted"
-                                value={customer.Name}
-                                onChange={e => setCustomer({ ...customer, Name: e.target.value })}
+                                value={customer.name}
+                                onChange={e => setCustomer({ ...customer, name: e.target.value })}
                             />
                             <input
                                 type="email"
