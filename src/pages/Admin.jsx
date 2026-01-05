@@ -512,8 +512,8 @@ const Admin = () => {
                                         <th className="pb-4">Date</th>
                                         <th className="pb-4">Customer</th>
                                         <th className="pb-4">Items</th>
-                                        <th className="pb-4">Status</th>
-                                        <th className="pb-4">Approval</th>
+                                        <th className="pb-4">Delivery Approval</th>
+                                        <th className="pb-4">Delivery Status</th>
                                         <th className="pb-4 text-right">Total</th>
                                         <th className="pb-4 text-center">Actions</th>
                                     </tr>
@@ -538,6 +538,14 @@ const Admin = () => {
                                                 ))}
                                             </td>
                                             <td className="py-4">
+                                                <span className={`px-3 py-1 rounded-sm text-xs font-bold border uppercase tracking-widest ${order.approvalStatus === 'Approved by Boss'
+                                                    ? 'bg-black text-green-400 border-green-400 shadow-[0_0_10px_rgba(74,222,128,0.3)]'
+                                                    : 'bg-green-100 text-green-800 border-green-200'
+                                                    }`}>
+                                                    {order.approvalStatus || 'PENDING'}
+                                                </span>
+                                            </td>
+                                            <td className="py-4">
                                                 <button
                                                     onClick={() => handleToggleStatus(order.id, order.status)}
                                                     className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border transition-colors ${order.status === 'fulfilled'
@@ -548,14 +556,6 @@ const Admin = () => {
                                                     {order.status === 'fulfilled' ? <CheckCircle className="w-3 h-3" /> : <Package className="w-3 h-3" />}
                                                     {order.status === 'fulfilled' ? 'Fulfilled' : 'Pending'}
                                                 </button>
-                                            </td>
-                                            <td className="py-4">
-                                                <span className={`px-3 py-1 rounded-sm text-xs font-bold border uppercase tracking-widest ${order.approvalStatus === 'Approved by Boss'
-                                                    ? 'bg-black text-green-400 border-green-400 shadow-[0_0_10px_rgba(74,222,128,0.3)]'
-                                                    : 'bg-green-100 text-green-800 border-green-200'
-                                                    }`}>
-                                                    {order.approvalStatus || 'PENDING'}
-                                                </span>
                                             </td>
                                             <td className={`py-4 text-right font-bold ${order.status === 'fulfilled' ? 'text-muted line-through decoration-muted' : 'text-accent'}`}>
                                                 ₹{order.total}
