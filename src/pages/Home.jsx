@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Eye, Calendar } from 'lucide-react';
+import precisionLensesImg from '../assets/precision-lenses.png';
 
 import { useProducts } from '../context/ProductContext';
 import { ShoppingBag } from 'lucide-react';
@@ -44,8 +45,8 @@ const Home = () => {
 
 
             {/* Philosophy Section */}
-            <section className="container mx-auto px-6">
-                <div className="bg-surface border border-border rounded-xl p-8 md:p-12 text-center md:text-left flex flex-col md:flex-row items-center gap-12">
+            <section className="container mx-auto px-6 py-12">
+                <div className="bg-surface border border-border rounded-xl p-8 md:p-12 text-center md:text-left flex flex-col md:flex-row items-center gap-12 inverted-theme">
                     <div className="md:w-1/2 space-y-6">
                         <span className="text-accent text-sm font-bold tracking-[0.2em] uppercase">Our Philosophy</span>
                         <h2 className="text-3xl md:text-4xl font-serif text-primary">Vision Beyond Sight</h2>
@@ -120,8 +121,8 @@ const Home = () => {
             </section>
 
             {/* Features Overview */}
-            <section className="grid grid-cols-1 md:grid-cols-2 gap-8 container mx-auto px-6">
-                <Link to="/catalogue" className="block p-8 border border-border bg-surface hover:border-accent/50 transition-colors duration-500 group rounded-xl">
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-8 container mx-auto px-6 py-12">
+                <Link to="/catalogue" className="block p-8 border border-border bg-surface hover:border-accent/50 transition-colors duration-500 group rounded-xl inverted-theme">
                     <div className="overflow-hidden rounded-lg mb-6 h-48">
                         <img
                             src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=800&q=80"
@@ -138,10 +139,10 @@ const Home = () => {
                     </span>
                 </Link>
 
-                <Link to="/catalogue" className="block p-8 border border-border bg-surface hover:border-accent/50 transition-colors duration-500 group rounded-xl">
+                <Link to="/catalogue" className="block p-8 border border-border bg-surface hover:border-accent/50 transition-colors duration-500 group rounded-xl inverted-theme">
                     <div className="overflow-hidden rounded-lg mb-6 h-48">
                         <img
-                            src="https://images.unsplash.com/photo-1504194569429-ca0152bc2a3f?auto=format&fit=crop&w=800&q=80"
+                            src={precisionLensesImg}
                             alt="Precision Lenses"
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />

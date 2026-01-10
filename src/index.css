@@ -46,4 +46,31 @@
     @apply font-serif;
     color: var(--text-primary) !important;
   }
+
+  /* Inverted Theme Logic */
+  /* If Global is Dark (Root/Default), make this section Light */
+  :root:not(.light) .inverted-theme {
+    --bg-primary: #cbd5e1;
+    --bg-secondary: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --accent-color: #0369a1;
+    --border-color: rgba(15, 23, 42, 0.15);
+
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
+
+  /* If Global is Light (.light), make this section Dark */
+  .light .inverted-theme {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-color: #38bdf8;
+    --border-color: rgba(255, 255, 255, 0.1);
+
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
 }

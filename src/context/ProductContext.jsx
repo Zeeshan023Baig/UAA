@@ -102,7 +102,7 @@ export const ProductProvider = ({ children }) => {
                 // Create Order Record
                 const orderRef = doc(collection(db, "orders"));
                 transaction.set(orderRef, {
-                    customer: customerDetails || { name: 'Guest', phone: '', email: '' },
+                    customer: customerDetails || { name: '', phone: '', email: '' },
                     items: cartItems,
                     total: cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0),
                     date: new Date().toISOString(),

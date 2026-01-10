@@ -381,7 +381,7 @@ const Admin = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Add/Edit Product Form */}
                     <div className="lg:col-span-1">
-                        <div className="bg-surface p-6 sticky top-24 border border-border">
+                        <div className="bg-surface p-6 sticky top-24 border border-border inverted-theme rounded-md">
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-xl font-serif text-secondary">
                                     {editingProduct ? 'Edit Product' : 'Add New Product'}
@@ -396,12 +396,12 @@ const Admin = () => {
                             <form onSubmit={handleProductSubmit} className="space-y-4">
                                 <input
                                     placeholder="Product Name"
-                                    className="w-full bg-white dark:bg-black/20 border border-border p-2 text-sm text-slate-900 dark:text-white rounded-sm placeholder:text-muted"
+                                    className="w-full bg-primary border border-border p-2 text-sm text-secondary rounded-sm placeholder:text-muted"
                                     value={newProduct.name} onChange={e => setNewProduct({ ...newProduct, name: e.target.value })} required
                                 />
                                 <div className="grid grid-cols-2 gap-4">
                                     <select
-                                        className="bg-white dark:bg-black/20 border border-border p-2 text-sm text-slate-900 dark:text-white rounded-sm"
+                                        className="bg-primary border border-border p-2 text-sm text-secondary rounded-sm"
                                         value={newProduct.category} onChange={e => setNewProduct({ ...newProduct, category: e.target.value })}
                                     >
                                         <option value="In-house">In-house</option>
@@ -411,23 +411,23 @@ const Admin = () => {
                                     </select>
                                     <input
                                         type="number" placeholder="Price"
-                                        className="bg-white dark:bg-black/20 border border-border p-2 text-sm text-slate-900 dark:text-white rounded-sm placeholder:text-muted"
+                                        className="bg-primary border border-border p-2 text-sm text-secondary rounded-sm placeholder:text-muted"
                                         value={newProduct.price} onChange={e => setNewProduct({ ...newProduct, price: e.target.value })} required
                                     />
                                 </div>
                                 <input
                                     type="number" placeholder="Initial Stock"
-                                    className="w-full bg-white dark:bg-black/20 border border-border p-2 text-sm text-slate-900 dark:text-white rounded-sm placeholder:text-muted"
+                                    className="w-full bg-primary border border-border p-2 text-sm text-secondary rounded-sm placeholder:text-muted"
                                     value={newProduct.stock} onChange={e => setNewProduct({ ...newProduct, stock: e.target.value })} required
                                 />
                                 <input
                                     placeholder="Specs (e.g. Titanium Frame)"
-                                    className="w-full bg-white dark:bg-black/20 border border-border p-2 text-sm text-slate-900 dark:text-white rounded-sm placeholder:text-muted"
+                                    className="w-full bg-primary border border-border p-2 text-sm text-secondary rounded-sm placeholder:text-muted"
                                     value={newProduct.specs} onChange={e => setNewProduct({ ...newProduct, specs: e.target.value })}
                                 />
                                 <input
                                     placeholder="External Link (Optional)"
-                                    className="w-full bg-white dark:bg-black/20 border border-border p-2 text-sm text-slate-900 dark:text-white rounded-sm placeholder:text-muted"
+                                    className="w-full bg-primary border border-border p-2 text-sm text-secondary rounded-sm placeholder:text-muted"
                                     value={newProduct.externalLink} onChange={e => setNewProduct({ ...newProduct, externalLink: e.target.value })}
                                 />
 
@@ -437,12 +437,12 @@ const Admin = () => {
                                         type="file"
                                         accept="image/*"
                                         onChange={e => setImageFile(e.target.files[0])}
-                                        className="w-full text-xs text-muted file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-semibold file:bg-surface file:text-secondary hover:file:bg-primary"
+                                        className="w-full text-xs text-muted file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-secondary hover:file:bg-surface"
                                     />
                                     <p className="text-[10px] text-muted">Or use URL (optional)</p>
                                     <input
                                         placeholder="Image URL (backup)"
-                                        className="w-full bg-white dark:bg-black/20 border border-border p-2 text-sm text-slate-900 dark:text-white rounded-sm placeholder:text-muted"
+                                        className="w-full bg-primary border border-border p-2 text-sm text-secondary rounded-sm placeholder:text-muted"
                                         value={newProduct.image} onChange={e => setNewProduct({ ...newProduct, image: e.target.value })}
                                     />
                                 </div>
