@@ -4,12 +4,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAUCPnr07evlvsSSAFRVTO4gWNmx085WGw",
-    authDomain: "uaa-ipad.firebaseapp.com",
-    projectId: "uaa-ipad",
-    storageBucket: "uaa-ipad.firebasestorage.app",
-    messagingSenderId: "263294265828",
-    appId: "1:263294265828:web:45ec07d5753258140dfff1"
+    apiKey: "AIzaSyDt73jiw7T1KldzzL8T9QtM3IeLUJhp3cs",
+    authDomain: "unitder-booking-v2.firebaseapp.com",
+    projectId: "unitder-booking-v2",
+    storageBucket: "unitder-booking-v2.firebasestorage.app",
+    messagingSenderId: "43698396696",
+    appId: "1:43698396696:web:fc3a99975ab913edd5ad6d"
 };
 
 // Initialize Firebase

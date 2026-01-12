@@ -105,11 +105,14 @@ export const ProductProvider = ({ children }) => {
                     customer: customerDetails || { name: '', phone: '', email: '' },
                     items: cartItems,
                     total: cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0),
+                    status: 'pending', // Default status for Admin tracking
+                    approvalStatus: 'Pending', // Default approval for Admin tracking
                     date: new Date().toISOString(),
                     timestamp: serverTimestamp()
                 });
                 return orderRef.id;
             });
+
             return { success: true, orderId };
         } catch (error) {
             console.error("Transaction failed: ", error);
