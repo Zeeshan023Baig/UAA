@@ -100,15 +100,18 @@ export const ProductProvider = ({ children }) => {
                 }
 
                 // Create Order Record
-                const orderRef = doc(collection(db, "orders"));
+                // Create Order Record
+                const orderRef = doc(collection(db, "bookings")); // CHANGED to "bookings"
                 transaction.set(orderRef, {
                     customer: customerDetails || { name: '', phone: '', email: '' },
                     items: cartItems,
                     total: cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0),
-                    status: 'pending', // Default status for Admin tracking
-                    approvalStatus: 'Pending', // Default approval for Admin tracking
+                    status: 'fulfilled', // CHANGED: Online orders are paid immediately
+                    approvalStatus: 'Approved',
+                    source: 'Online Store', // ADDED: Shows Green Badge
                     date: new Date().toISOString(),
-                    timestamp: serverTimestamp()
+                    timestamp: serverTimestamp(),
+                    createdAt: serverTimestamp() // ADDED: For sorting
                 });
                 return orderRef.id;
             });
