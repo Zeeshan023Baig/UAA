@@ -159,7 +159,7 @@ const Cart = () => {
             } catch (emailError) {
                 // Email Failed: Rollback Order (Delete from DB)
                 console.error("Email verification failed:", emailError);
-                await deleteDoc(doc(db, "orders", result.orderId));
+                await deleteDoc(doc(db, "bookings", result.orderId));
 
                 setIsCheckingOut(false);
                 alert(`Booking Failed: We could not verify your email address (${finalCustomer.email}). \n\nPlease check your email and try again. The order has NOT been placed.`);

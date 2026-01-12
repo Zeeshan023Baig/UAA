@@ -117,7 +117,7 @@ const Admin = () => {
     // Stock Edit State
     // Fetch Orders
     useEffect(() => {
-        const q = query(collection(db, "orders"), orderBy("date", "desc"));
+        const q = query(collection(db, "bookings"), orderBy("date", "desc"));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const ordersData = snapshot.docs.map(doc => ({
                 id: doc.id,
@@ -254,7 +254,7 @@ const Admin = () => {
     const handleToggleStatus = async (id, currentStatus) => {
         const newStatus = currentStatus === 'fulfilled' ? 'pending' : 'fulfilled';
         try {
-            await updateDoc(doc(db, "orders", id), {
+            await updateDoc(doc(db, "bookings", id), {
                 status: newStatus
             });
         } catch (error) {
@@ -265,7 +265,7 @@ const Admin = () => {
     const handleDeleteOrder = async (orderId) => {
         if (window.confirm("Are you sure you want to delete this order PERMANENTLY? This cannot be undone.")) {
             try {
-                await deleteDoc(doc(db, "orders", orderId));
+                await deleteDoc(doc(db, "bookings", orderId));
             } catch (error) {
                 alert("Error deleting order: " + error.message);
             }

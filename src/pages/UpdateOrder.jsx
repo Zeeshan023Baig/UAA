@@ -16,7 +16,7 @@ const UpdateOrder = () => {
     useEffect(() => {
         const fetchOrder = async () => {
             try {
-                const docRef = doc(db, "orders", orderId);
+                const docRef = doc(db, "bookings", orderId);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     setOrder({ id: docSnap.id, ...docSnap.data() });
@@ -65,7 +65,7 @@ const UpdateOrder = () => {
         if (result.success) {
             alert("Order updated successfully!");
             // Refresh order data
-            const docRef = doc(db, "orders", orderId);
+            const docRef = doc(db, "bookings", orderId);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 setOrder({ id: docSnap.id, ...docSnap.data() });

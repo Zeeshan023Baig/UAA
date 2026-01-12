@@ -169,7 +169,7 @@ export const ProductProvider = ({ children }) => {
     const updateOrderItems = async (orderId, newItems) => {
         try {
             await runTransaction(db, async (transaction) => {
-                const orderRef = doc(db, "orders", orderId);
+                const orderRef = doc(db, "bookings", orderId);
                 const orderDoc = await transaction.get(orderRef);
 
                 if (!orderDoc.exists()) {
