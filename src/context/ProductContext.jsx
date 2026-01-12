@@ -100,7 +100,6 @@ export const ProductProvider = ({ children }) => {
                 }
 
                 // Create Order Record
-                // Create Order Record
                 const orderRef = doc(collection(db, "bookings")); // CHANGED to "bookings"
                 transaction.set(orderRef, {
                     customer: customerDetails || { name: '', phone: '', email: '' },
