@@ -105,9 +105,9 @@ export const ProductProvider = ({ children }) => {
                     customer: customerDetails || { name: '', phone: '', email: '' },
                     items: cartItems,
                     total: cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0),
-                    status: 'fulfilled', // CHANGED: Online orders are paid immediately
-                    approvalStatus: 'Approved',
-                    source: 'Online Store', // ADDED: Shows Green Badge
+                    status: 'pending', // CHANGED: Back to pending
+                    approvalStatus: 'Pending', // CHANGED: Back to Pending
+                    source: 'Retailer', // CHANGED: Shows Blue Badge
                     date: new Date().toISOString(),
                     timestamp: serverTimestamp(),
                     createdAt: serverTimestamp() // ADDED: For sorting
