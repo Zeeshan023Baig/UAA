@@ -119,7 +119,12 @@ const Cart = () => {
 
         // Use fixed email if corrected, otherwise original
         const finalEmail = validation.fixedEmail || customer.email;
-        const finalCustomer = { ...customer, email: finalEmail };
+        const finalCustomer = {
+            ...customer,
+            email: finalEmail,
+            address: customer.branch, // Map branch to address for Admin Panel
+            company: customer.StoreName // Map StoreName to company for Admin Panel
+        };
 
         setIsCheckingOut(true);
 
